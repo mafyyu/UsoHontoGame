@@ -506,6 +506,730 @@ export function ClientDataComponent() {
 }
 ```
 
+## API Implementation
+
+### Overview
+The API layer is implemented using Next.js API Routes (App Router) following Clean Architecture principles. This ensures separation of concerns, testability, and maintainability of the backend logic.
+
+### Clean Architecture Principles
+
+The API implementation follows the Clean Architecture pattern with four main layers:
+
+```
+┌─────────────────────────────────────────────────────┐
+│           Presentation Layer (API Routes)           │
+│  HTTP Request/Response, Validation, Serialization   │
+└──────────────────────┬──────────────────────────────┘
+                       │
+┌──────────────────────▼──────────────────────────────┐
+│           Application Layer (Use Cases)             │
+│     Business Logic, Orchestration, Workflows        │
+└──────────────────────┬──────────────────────────────┘
+                       │
+┌──────────────────────▼──────────────────────────────┐
+│              Domain Layer (Entities)                │
+│   Core Business Entities, Domain Rules, Interfaces  │
+└──────────────────────┬──────────────────────────────┘
+                       │
+┌──────────────────────▼──────────────────────────────┐
+│       Infrastructure Layer (External Services)      │
+│     Database, External APIs, File System, etc.      │
+└─────────────────────────────────────────────────────┘
+```
+
+### Directory Structure
+
+```
+src/
+├── app/
+│   └── api/                    # Next.js API Routes
+│       ├── auth/
+│       │   ├── login/
+│       │   │   └── route.ts    # POST /api/auth/login
+│       │   └── callback/
+│       │       └── route.ts    # GET /api/auth/callback
+│       ├── tenants/
+│       │   ├── route.ts        # GET /api/tenants
+│       │   └── [id]/
+│       │       ├── route.ts    # GET/PUT/DELETE /api/tenants/:id
+│       │       └── members/
+│       │           └── route.ts # GET /api/tenants/:id/members
+│       ├── budgets/
+│       │   ├── route.ts        # GET/POST /api/budgets
+│       │   └── [id]/
+│       │       └── route.ts    # GET/PUT/DELETE /api/budgets/:id
+│       └── users/
+│           └── [id]/
+│               └── route.ts    # GET/PUT /api/users/:id
+├── server/                     # Backend logic (Clean Architecture)
+│   ├── domain/                 # Domain Layer
+│   │   ├── entities/           # Core business entities
+│   │   │   ├── User.ts
+│   │   │   ├── Tenant.ts
+│   │   │   ├── Budget.ts
+│   │   │   └── Permission.ts
+│   │   ├── repositories/       # Repository interfaces
+│   │   │   ├── IUserRepository.ts
+│   │   │   ├── ITenantRepository.ts
+│   │   │   └── IBudgetRepository.ts
+│   │   └── value-objects/      # Value objects
+│   │       ├── Email.ts
+│   │       ├── Money.ts
+│   │       └── TenantId.ts
+│   ├── application/            # Application Layer
+│   │   ├── use-cases/          # Business use cases
+│   │   │   ├── auth/
+│   │   │   │   ├── LoginUseCase.ts
+│   │   │   │   └── ValidateTokenUseCase.ts
+│   │   │   ├── tenants/
+│   │   │   │   ├── CreateTenantUseCase.ts
+│   │   │   │   ├── UpdateTenantUseCase.ts
+│   │   │   │   └── DeleteTenantUseCase.ts
+│   │   │   ├── budgets/
+│   │   │   │   ├── CreateBudgetUseCase.ts
+│   │   │   │   ├── GetBudgetUseCase.ts
+│   │   │   │   └── UpdateBudgetUseCase.ts
+│   │   │   └── users/
+│   │   │       ├── GetUserProfileUseCase.ts
+│   │   │       └── UpdateUserPermissionsUseCase.ts
+│   │   ├── dto/                # Data Transfer Objects
+│   │   │   ├── requests/
+│   │   │   │   ├── CreateTenantRequest.ts
+│   │   │   │   └── UpdateBudgetRequest.ts
+│   │   │   └── responses/
+│   │   │       ├── TenantResponse.ts
+│   │   │       └── BudgetResponse.ts
+│   │   └── services/           # Application services
+│   │       ├── AuthService.ts
+│   │       ├── NotificationService.ts
+│   │       └── ValidationService.ts
+│   └── infrastructure/         # Infrastructure Layer
+│       ├── repositories/       # Repository implementations
+│       │   ├── UserRepository.ts
+│       │   ├── TenantRepository.ts
+│       │   └── BudgetRepository.ts
+│       ├── database/           # Database configuration
+│       │   ├── client.ts       # Database client
+│       │   └── migrations/     # Database migrations
+│       ├── external/           # External API clients
+│       │   ├── MfidApiClient.ts
+│       │   └── PaymentApiClient.ts
+│       └── adapters/           # Adapters for external services
+│           ├── CacheAdapter.ts
+│           └── StorageAdapter.ts
+```
+
+### Layer Responsibilities
+
+#### 1. Presentation Layer (API Routes)
+
+The presentation layer handles HTTP concerns and delegates business logic to use cases.
+
+```typescript
+// app/api/tenants/route.ts
+import { NextRequest, NextResponse } from 'next/server';
+import { CreateTenantUseCase } from '@/server/application/use-cases/tenants/CreateTenantUseCase';
+import { TenantRepository } from '@/server/infrastructure/repositories/TenantRepository';
+import { createApiResponse, handleApiError } from '@/server/infrastructure/http/apiHelpers';
+
+export async function POST(request: NextRequest) {
+  try {
+    // 1. Parse and validate request
+    const body = await request.json();
+
+    // 2. Dependency injection
+    const tenantRepository = new TenantRepository();
+    const createTenantUseCase = new CreateTenantUseCase(tenantRepository);
+
+    // 3. Execute use case
+    const tenant = await createTenantUseCase.execute({
+      organizationName: body.organizationName,
+      ownerId: body.ownerId,
+    });
+
+    // 4. Return response
+    return NextResponse.json(
+      createApiResponse(tenant, 'Tenant created successfully'),
+      { status: 201 }
+    );
+  } catch (error) {
+    return handleApiError(error);
+  }
+}
+
+export async function GET(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const userId = searchParams.get('userId');
+
+    const tenantRepository = new TenantRepository();
+    const tenants = await tenantRepository.findByUserId(userId);
+
+    return NextResponse.json(
+      createApiResponse(tenants, 'Tenants retrieved successfully')
+    );
+  } catch (error) {
+    return handleApiError(error);
+  }
+}
+```
+
+**Presentation Layer Responsibilities:**
+- HTTP request/response handling
+- Request validation and parsing
+- Response serialization
+- Error handling and HTTP status codes
+- Authentication/authorization checks
+- Dependency injection
+- Routing
+
+#### 2. Application Layer (Use Cases)
+
+The application layer contains business workflows and orchestrates domain logic.
+
+```typescript
+// server/application/use-cases/tenants/CreateTenantUseCase.ts
+import { ITenantRepository } from '@/server/domain/repositories/ITenantRepository';
+import { Tenant } from '@/server/domain/entities/Tenant';
+import { TenantId } from '@/server/domain/value-objects/TenantId';
+
+export interface CreateTenantRequest {
+  organizationName: string;
+  ownerId: string;
+}
+
+export class CreateTenantUseCase {
+  constructor(private readonly tenantRepository: ITenantRepository) {}
+
+  async execute(request: CreateTenantRequest): Promise<Tenant> {
+    // 1. Validate business rules
+    if (!request.organizationName || request.organizationName.trim().length === 0) {
+      throw new Error('Organization name is required');
+    }
+
+    // 2. Create domain entity
+    const tenant = new Tenant({
+      id: TenantId.generate(),
+      organizationName: request.organizationName,
+      ownerId: request.ownerId,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+
+    // 3. Persist using repository
+    const savedTenant = await this.tenantRepository.save(tenant);
+
+    // 4. Return result
+    return savedTenant;
+  }
+}
+```
+
+**Application Layer Responsibilities:**
+- Business workflow orchestration
+- Business rule validation
+- Coordination between domain entities
+- Transaction management
+- DTO mapping
+- Use case implementation
+
+#### 3. Domain Layer (Entities)
+
+The domain layer contains core business entities and rules.
+
+```typescript
+// server/domain/entities/Tenant.ts
+import { TenantId } from '../value-objects/TenantId';
+
+export interface TenantProps {
+  id: TenantId;
+  organizationName: string;
+  ownerId: string;
+  settings?: TenantSettings;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface TenantSettings {
+  theme?: string;
+  language?: string;
+  timezone?: string;
+}
+
+export class Tenant {
+  private constructor(private readonly props: TenantProps) {
+    this.validate();
+  }
+
+  static create(props: TenantProps): Tenant {
+    return new Tenant(props);
+  }
+
+  private validate(): void {
+    if (!this.props.organizationName || this.props.organizationName.trim().length === 0) {
+      throw new Error('Organization name cannot be empty');
+    }
+
+    if (this.props.organizationName.length > 100) {
+      throw new Error('Organization name cannot exceed 100 characters');
+    }
+  }
+
+  // Getters
+  get id(): TenantId {
+    return this.props.id;
+  }
+
+  get organizationName(): string {
+    return this.props.organizationName;
+  }
+
+  get ownerId(): string {
+    return this.props.ownerId;
+  }
+
+  get settings(): TenantSettings | undefined {
+    return this.props.settings;
+  }
+
+  // Business methods
+  updateOrganizationName(newName: string): void {
+    if (!newName || newName.trim().length === 0) {
+      throw new Error('Organization name cannot be empty');
+    }
+
+    this.props.organizationName = newName;
+    this.props.updatedAt = new Date();
+  }
+
+  updateSettings(settings: TenantSettings): void {
+    this.props.settings = { ...this.props.settings, ...settings };
+    this.props.updatedAt = new Date();
+  }
+
+  // Serialization
+  toJSON(): Record<string, unknown> {
+    return {
+      id: this.props.id.value,
+      organizationName: this.props.organizationName,
+      ownerId: this.props.ownerId,
+      settings: this.props.settings,
+      createdAt: this.props.createdAt.toISOString(),
+      updatedAt: this.props.updatedAt.toISOString(),
+    };
+  }
+}
+```
+
+```typescript
+// server/domain/repositories/ITenantRepository.ts
+import { Tenant } from '../entities/Tenant';
+import { TenantId } from '../value-objects/TenantId';
+
+export interface ITenantRepository {
+  save(tenant: Tenant): Promise<Tenant>;
+  findById(id: TenantId): Promise<Tenant | null>;
+  findByUserId(userId: string): Promise<Tenant[]>;
+  delete(id: TenantId): Promise<void>;
+  exists(id: TenantId): Promise<boolean>;
+}
+```
+
+**Domain Layer Responsibilities:**
+- Core business entities
+- Domain rules and invariants
+- Value objects
+- Repository interfaces (not implementations)
+- Domain events
+- Domain services
+
+#### 4. Infrastructure Layer (External Services)
+
+The infrastructure layer implements repository interfaces and external service integrations.
+
+```typescript
+// server/infrastructure/repositories/TenantRepository.ts
+import { ITenantRepository } from '@/server/domain/repositories/ITenantRepository';
+import { Tenant } from '@/server/domain/entities/Tenant';
+import { TenantId } from '@/server/domain/value-objects/TenantId';
+import { db } from '../database/client';
+
+export class TenantRepository implements ITenantRepository {
+  async save(tenant: Tenant): Promise<Tenant> {
+    const data = tenant.toJSON();
+
+    const result = await db.tenant.upsert({
+      where: { id: data.id as string },
+      create: {
+        id: data.id as string,
+        organizationName: data.organizationName as string,
+        ownerId: data.ownerId as string,
+        settings: data.settings as Record<string, unknown>,
+        createdAt: new Date(data.createdAt as string),
+        updatedAt: new Date(data.updatedAt as string),
+      },
+      update: {
+        organizationName: data.organizationName as string,
+        settings: data.settings as Record<string, unknown>,
+        updatedAt: new Date(data.updatedAt as string),
+      },
+    });
+
+    return this.toDomain(result);
+  }
+
+  async findById(id: TenantId): Promise<Tenant | null> {
+    const result = await db.tenant.findUnique({
+      where: { id: id.value },
+    });
+
+    if (!result) return null;
+    return this.toDomain(result);
+  }
+
+  async findByUserId(userId: string): Promise<Tenant[]> {
+    const results = await db.tenant.findMany({
+      where: {
+        members: {
+          some: { userId }
+        }
+      },
+    });
+
+    return results.map(r => this.toDomain(r));
+  }
+
+  async delete(id: TenantId): Promise<void> {
+    await db.tenant.delete({
+      where: { id: id.value },
+    });
+  }
+
+  async exists(id: TenantId): Promise<boolean> {
+    const count = await db.tenant.count({
+      where: { id: id.value },
+    });
+    return count > 0;
+  }
+
+  private toDomain(raw: unknown): Tenant {
+    // Map database entity to domain entity
+    return Tenant.create({
+      id: TenantId.from(raw.id),
+      organizationName: raw.organizationName,
+      ownerId: raw.ownerId,
+      settings: raw.settings,
+      createdAt: raw.createdAt,
+      updatedAt: raw.updatedAt,
+    });
+  }
+}
+```
+
+**Infrastructure Layer Responsibilities:**
+- Repository implementations
+- Database access
+- External API clients
+- File system operations
+- Caching
+- Message queues
+- Third-party service integrations
+
+### API Design Patterns
+
+#### 1. Dependency Injection
+
+```typescript
+// server/infrastructure/di/container.ts
+import { ITenantRepository } from '@/server/domain/repositories/ITenantRepository';
+import { TenantRepository } from '@/server/infrastructure/repositories/TenantRepository';
+import { CreateTenantUseCase } from '@/server/application/use-cases/tenants/CreateTenantUseCase';
+
+export class DependencyContainer {
+  private static repositories = new Map<string, unknown>();
+  private static useCases = new Map<string, unknown>();
+
+  static getTenantRepository(): ITenantRepository {
+    if (!this.repositories.has('TenantRepository')) {
+      this.repositories.set('TenantRepository', new TenantRepository());
+    }
+    return this.repositories.get('TenantRepository') as ITenantRepository;
+  }
+
+  static getCreateTenantUseCase(): CreateTenantUseCase {
+    if (!this.useCases.has('CreateTenantUseCase')) {
+      this.useCases.set(
+        'CreateTenantUseCase',
+        new CreateTenantUseCase(this.getTenantRepository())
+      );
+    }
+    return this.useCases.get('CreateTenantUseCase') as CreateTenantUseCase;
+  }
+}
+
+// Usage in API route
+// app/api/tenants/route.ts
+import { DependencyContainer } from '@/server/infrastructure/di/container';
+
+export async function POST(request: NextRequest) {
+  const useCase = DependencyContainer.getCreateTenantUseCase();
+  const result = await useCase.execute(await request.json());
+  return NextResponse.json(result);
+}
+```
+
+#### 2. Error Handling
+
+```typescript
+// server/domain/errors/DomainError.ts
+export abstract class DomainError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = this.constructor.name;
+  }
+}
+
+export class NotFoundError extends DomainError {}
+export class ValidationError extends DomainError {}
+export class UnauthorizedError extends DomainError {}
+export class ForbiddenError extends DomainError {}
+
+// server/infrastructure/http/apiHelpers.ts
+import { NextResponse } from 'next/server';
+import {
+  NotFoundError,
+  ValidationError,
+  UnauthorizedError,
+  ForbiddenError
+} from '@/server/domain/errors/DomainError';
+
+export function handleApiError(error: unknown): NextResponse {
+  console.error('API Error:', error);
+
+  if (error instanceof ValidationError) {
+    return NextResponse.json(
+      { error: error.message, status: 'error' },
+      { status: 400 }
+    );
+  }
+
+  if (error instanceof UnauthorizedError) {
+    return NextResponse.json(
+      { error: 'Unauthorized', status: 'error' },
+      { status: 401 }
+    );
+  }
+
+  if (error instanceof ForbiddenError) {
+    return NextResponse.json(
+      { error: 'Forbidden', status: 'error' },
+      { status: 403 }
+    );
+  }
+
+  if (error instanceof NotFoundError) {
+    return NextResponse.json(
+      { error: error.message, status: 'error' },
+      { status: 404 }
+    );
+  }
+
+  return NextResponse.json(
+    { error: 'Internal server error', status: 'error' },
+    { status: 500 }
+  );
+}
+
+export function createApiResponse<T>(data: T, message = 'Success') {
+  return {
+    data,
+    message,
+    status: 'success' as const,
+  };
+}
+```
+
+#### 3. Middleware Pattern
+
+```typescript
+// server/infrastructure/middleware/auth.ts
+import { NextRequest, NextResponse } from 'next/server';
+import { UnauthorizedError } from '@/server/domain/errors/DomainError';
+
+export async function withAuth(
+  handler: (request: NextRequest) => Promise<NextResponse>,
+  request: NextRequest
+): Promise<NextResponse> {
+  const token = request.headers.get('Authorization')?.replace('Bearer ', '');
+
+  if (!token) {
+    throw new UnauthorizedError('No authentication token provided');
+  }
+
+  // Validate token
+  const user = await validateToken(token);
+
+  if (!user) {
+    throw new UnauthorizedError('Invalid authentication token');
+  }
+
+  // Attach user to request
+  (request as any).user = user;
+
+  return handler(request);
+}
+
+// Usage
+// app/api/protected/route.ts
+export async function GET(request: NextRequest) {
+  return withAuth(async (req) => {
+    const user = (req as any).user;
+    return NextResponse.json({ user });
+  }, request);
+}
+```
+
+#### 4. Request Validation
+
+```typescript
+// server/application/validation/schemas.ts
+import { z } from 'zod';
+
+export const CreateTenantSchema = z.object({
+  organizationName: z.string().min(1).max(100),
+  ownerId: z.string().uuid(),
+});
+
+export const UpdateBudgetSchema = z.object({
+  amount: z.number().positive(),
+  category: z.string().min(1),
+  period: z.enum(['monthly', 'quarterly', 'yearly']),
+});
+
+// server/infrastructure/http/validation.ts
+export function validateRequest<T>(schema: z.ZodSchema<T>, data: unknown): T {
+  try {
+    return schema.parse(data);
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      throw new ValidationError(
+        `Validation failed: ${error.errors.map(e => e.message).join(', ')}`
+      );
+    }
+    throw error;
+  }
+}
+
+// Usage in API route
+import { CreateTenantSchema } from '@/server/application/validation/schemas';
+import { validateRequest } from '@/server/infrastructure/http/validation';
+
+export async function POST(request: NextRequest) {
+  const body = await request.json();
+  const validatedData = validateRequest(CreateTenantSchema, body);
+
+  // Use validatedData...
+}
+```
+
+### Testing Strategy
+
+#### 1. Unit Tests for Use Cases
+
+```typescript
+// server/application/use-cases/tenants/__tests__/CreateTenantUseCase.test.ts
+import { describe, it, expect, vi } from 'vitest';
+import { CreateTenantUseCase } from '../CreateTenantUseCase';
+import { ITenantRepository } from '@/server/domain/repositories/ITenantRepository';
+
+describe('CreateTenantUseCase', () => {
+  it('should create a tenant successfully', async () => {
+    // Arrange
+    const mockRepository: ITenantRepository = {
+      save: vi.fn().mockResolvedValue(mockTenant),
+      findById: vi.fn(),
+      findByUserId: vi.fn(),
+      delete: vi.fn(),
+      exists: vi.fn(),
+    };
+
+    const useCase = new CreateTenantUseCase(mockRepository);
+    const request = {
+      organizationName: 'Test Organization',
+      ownerId: 'user-123',
+    };
+
+    // Act
+    const result = await useCase.execute(request);
+
+    // Assert
+    expect(result.organizationName).toBe('Test Organization');
+    expect(mockRepository.save).toHaveBeenCalledOnce();
+  });
+
+  it('should throw error for empty organization name', async () => {
+    // Arrange
+    const mockRepository: ITenantRepository = {
+      save: vi.fn(),
+      findById: vi.fn(),
+      findByUserId: vi.fn(),
+      delete: vi.fn(),
+      exists: vi.fn(),
+    };
+
+    const useCase = new CreateTenantUseCase(mockRepository);
+
+    // Act & Assert
+    await expect(
+      useCase.execute({ organizationName: '', ownerId: 'user-123' })
+    ).rejects.toThrow('Organization name is required');
+  });
+});
+```
+
+#### 2. Integration Tests for API Routes
+
+```typescript
+// app/api/tenants/__tests__/route.test.ts
+import { describe, it, expect } from 'vitest';
+import { POST } from '../route';
+
+describe('POST /api/tenants', () => {
+  it('should create a tenant and return 201', async () => {
+    // Arrange
+    const request = new Request('http://localhost:3000/api/tenants', {
+      method: 'POST',
+      body: JSON.stringify({
+        organizationName: 'Test Org',
+        ownerId: 'user-123',
+      }),
+    });
+
+    // Act
+    const response = await POST(request as any);
+    const data = await response.json();
+
+    // Assert
+    expect(response.status).toBe(201);
+    expect(data.status).toBe('success');
+    expect(data.data.organizationName).toBe('Test Org');
+  });
+});
+```
+
+### Best Practices
+
+1. **Separation of Concerns**: Each layer has distinct responsibilities with no leakage
+2. **Dependency Rule**: Dependencies point inward (Infrastructure → Application → Domain)
+3. **Interface Segregation**: Define interfaces in the domain layer, implement in infrastructure
+4. **Single Responsibility**: Each use case handles one business operation
+5. **Testability**: Business logic is isolated and easily testable
+6. **Type Safety**: Full TypeScript coverage across all layers
+7. **Error Handling**: Consistent error handling with domain-specific errors
+8. **Validation**: Input validation at boundaries (API routes)
+9. **Immutability**: Prefer immutable data structures in domain entities
+10. **Documentation**: Document business rules and API contracts
+
 ## State Management
 
 ### 1. React Built-in State
