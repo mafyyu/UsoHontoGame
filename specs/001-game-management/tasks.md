@@ -25,13 +25,13 @@
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Initialize Next.js 15 project with TypeScript 5 strict mode in project root
-- [ ] T002 [P] Configure Tailwind CSS v4 in src/app/globals.css and tailwind.config.ts
-- [ ] T003 [P] Configure Biome for formatting and linting in biome.json
-- [ ] T004 [P] Configure Vitest and React Testing Library in vitest.config.ts and tests/setup.ts
-- [ ] T005 [P] Create TypeScript path aliases in tsconfig.json (@/components, @/server, @/lib, @/types)
-- [ ] T006 [P] Set up responsive breakpoints and design tokens in src/app/globals.css
-- [ ] T007 [P] Create directory structure per plan.md (src/app/, src/server/, src/components/, tests/)
+- [X] T001 Initialize Next.js 15 project with TypeScript 5 strict mode in project root
+- [X] T002 [P] Configure Tailwind CSS v4 in src/app/globals.css and tailwind.config.ts
+- [X] T003 [P] Configure Biome for formatting and linting in biome.json
+- [X] T004 [P] Configure Vitest and React Testing Library in vitest.config.ts and tests/setup.ts
+- [X] T005 [P] Create TypeScript path aliases in tsconfig.json (@/components, @/server, @/lib, @/types)
+- [X] T006 [P] Set up responsive breakpoints and design tokens in src/app/globals.css
+- [X] T007 [P] Create directory structure per plan.md (src/app/, src/server/, src/components/, tests/)
 
 ---
 
@@ -41,33 +41,33 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T008 Create base domain entities directory structure in src/server/domain/entities/
-- [ ] T009 [P] Create GameSession entity in src/server/domain/entities/GameSession.ts
-- [ ] T010 [P] Create Team entity in src/server/domain/entities/Team.ts
-- [ ] T011 [P] Create Participant entity in src/server/domain/entities/Participant.ts
-- [ ] T012 [P] Create Episode entity in src/server/domain/entities/Episode.ts
-- [ ] T013 [P] Create Vote entity in src/server/domain/entities/Vote.ts
-- [ ] T014 [P] Create Turn entity in src/server/domain/entities/Turn.ts
-- [ ] T015 [P] Create SessionPhase enum in src/types/game.ts
-- [ ] T016 [P] Create TurnPhase enum in src/types/game.ts
-- [ ] T017 [P] Create ParticipantRole enum in src/types/game.ts
-- [ ] T018 [P] Define repository interfaces in src/server/domain/repositories/
-- [ ] T019 [P] Create IGameSessionRepository interface in src/server/domain/repositories/IGameSessionRepository.ts
-- [ ] T020 [P] Create IParticipantRepository interface in src/server/domain/repositories/IParticipantRepository.ts
-- [ ] T021 [P] Create IVoteRepository interface in src/server/domain/repositories/IVoteRepository.ts
-- [ ] T022 [P] Implement InMemoryGameSessionRepository in src/server/infrastructure/repositories/InMemoryGameSessionRepository.ts
-- [ ] T023 [P] Implement InMemoryParticipantRepository in src/server/infrastructure/repositories/InMemoryParticipantRepository.ts
-- [ ] T024 [P] Implement InMemoryVoteRepository in src/server/infrastructure/repositories/InMemoryVoteRepository.ts
-- [ ] T025 [P] Create SessionIdGenerator service using nanoid in src/server/application/services/SessionIdGenerator.ts
-- [ ] T026 [P] Create ScoreCalculationService in src/server/application/services/ScoreCalculationService.ts
-- [ ] T027 [P] Define API DTO types in src/server/application/dto/requests/ and responses/
-- [ ] T028 [P] Create shared validation utilities in src/lib/validators.ts
-- [ ] T029 [P] Set up error handling utilities in src/lib/errors.ts
-- [ ] T030 [P] Create base UI components: Button in src/components/ui/Button/index.tsx
-- [ ] T031 [P] Create base UI components: Input in src/components/ui/Input/index.tsx
-- [ ] T032 [P] Create base UI components: Modal in src/components/ui/Modal/index.tsx
-- [ ] T033 [P] Create base UI components: Toast in src/components/ui/Toast/index.tsx
-- [ ] T034 [P] Create base UI components: LoadingSpinner in src/components/ui/LoadingSpinner/index.tsx
+- [X] T008 Create base domain entities directory structure in src/server/domain/entities/
+- [X] T009 [P] Create GameSession entity in src/server/domain/entities/GameSession.ts
+- [X] T010 [P] Create Team entity in src/server/domain/entities/Team.ts
+- [X] T011 [P] Create Participant entity in src/server/domain/entities/Participant.ts
+- [X] T012 [P] Create Episode entity in src/server/domain/entities/Episode.ts
+- [X] T013 [P] Create Vote entity in src/server/domain/entities/Vote.ts
+- [X] T014 [P] Create Turn entity in src/server/domain/entities/Turn.ts
+- [X] T015 [P] Create SessionPhase enum in src/types/game.ts
+- [X] T016 [P] Create TurnPhase enum in src/types/game.ts
+- [X] T017 [P] Create ParticipantRole enum in src/types/game.ts
+- [X] T018 [P] Define repository interfaces in src/server/domain/repositories/
+- [X] T019 [P] Create IGameSessionRepository interface in src/server/domain/repositories/IGameSessionRepository.ts
+- [X] T020 [P] Create IParticipantRepository interface in src/server/domain/repositories/IParticipantRepository.ts
+- [X] T021 [P] Create IVoteRepository interface in src/server/domain/repositories/IVoteRepository.ts
+- [X] T022 [P] Implement InMemoryGameSessionRepository in src/server/infrastructure/repositories/InMemoryGameSessionRepository.ts
+- [X] T023 [P] Implement InMemoryParticipantRepository in src/server/infrastructure/repositories/InMemoryParticipantRepository.ts
+- [X] T024 [P] Implement InMemoryVoteRepository in src/server/infrastructure/repositories/InMemoryVoteRepository.ts
+- [X] T025 [P] Create SessionIdGenerator service using nanoid in src/server/application/services/SessionIdGenerator.ts
+- [X] T026 [P] Create ScoreCalculationService in src/server/application/services/ScoreCalculationService.ts
+- [X] T027 [P] Define API DTO types in src/server/application/dto/requests/ and responses/
+- [X] T028 [P] Create shared validation utilities in src/lib/validators.ts
+- [X] T029 [P] Set up error handling utilities in src/lib/errors.ts
+- [X] T030 [P] Create base UI components: Button in src/components/ui/Button/index.tsx
+- [X] T031 [P] Create base UI components: Input in src/components/ui/Input/index.tsx
+- [X] T032 [P] Create base UI components: Modal in src/components/ui/Modal/index.tsx
+- [X] T033 [P] Create base UI components: Toast in src/components/ui/Toast/index.tsx
+- [X] T034 [P] Create base UI components: LoadingSpinner in src/components/ui/LoadingSpinner/index.tsx
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -83,52 +83,52 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T035 [P] [US1] Write unit test for CreateSessionUseCase in tests/unit/use-cases/CreateSessionUseCase.test.ts
-- [ ] T036 [P] [US1] Write unit test for JoinSessionUseCase in tests/unit/use-cases/JoinSessionUseCase.test.ts
-- [ ] T037 [P] [US1] Write unit test for RegisterEpisodesUseCase in tests/unit/use-cases/RegisterEpisodesUseCase.test.ts
-- [ ] T038 [P] [US1] Write unit test for SubmitVoteUseCase in tests/unit/use-cases/SubmitVoteUseCase.test.ts
-- [ ] T039 [P] [US1] Write unit test for RevealAnswerUseCase in tests/unit/use-cases/RevealAnswerUseCase.test.ts
-- [ ] T040 [P] [US1] Write unit test for ScoreCalculationService in tests/unit/services/ScoreCalculationService.test.ts
-- [ ] T041 [P] [US1] Write integration test for POST /api/sessions in tests/integration/api/sessions.test.ts
-- [ ] T042 [P] [US1] Write integration test for POST /api/sessions/[id]/join in tests/integration/api/join.test.ts
-- [ ] T043 [P] [US1] Write integration test for POST /api/episodes in tests/integration/api/episodes.test.ts
-- [ ] T044 [P] [US1] Write integration test for POST /api/votes in tests/integration/api/votes.test.ts
-- [ ] T045 [P] [US1] Write integration test for POST /api/turns/[id]/reveal in tests/integration/api/reveal.test.ts
+- [X] T035 [P] [US1] Write unit test for CreateSessionUseCase in tests/unit/use-cases/CreateSessionUseCase.test.ts
+- [X] T036 [P] [US1] Write unit test for JoinSessionUseCase in tests/unit/use-cases/JoinSessionUseCase.test.ts
+- [X] T037 [P] [US1] Write unit test for RegisterEpisodesUseCase in tests/unit/use-cases/RegisterEpisodesUseCase.test.ts
+- [X] T038 [P] [US1] Write unit test for SubmitVoteUseCase in tests/unit/use-cases/SubmitVoteUseCase.test.ts
+- [X] T039 [P] [US1] Write unit test for RevealAnswerUseCase in tests/unit/use-cases/RevealAnswerUseCase.test.ts
+- [X] T040 [P] [US1] Write unit test for ScoreCalculationService in tests/unit/services/ScoreCalculationService.test.ts
+- [X] T041 [P] [US1] Write integration test for POST /api/sessions in tests/integration/api/sessions.test.ts
+- [X] T042 [P] [US1] Write integration test for POST /api/sessions/[id]/join in tests/integration/api/join.test.ts
+- [X] T043 [P] [US1] Write integration test for POST /api/episodes in tests/integration/api/episodes.test.ts
+- [X] T044 [P] [US1] Write integration test for POST /api/votes in tests/integration/api/votes.test.ts
+- [X] T045 [P] [US1] Write integration test for POST /api/turns/[id]/reveal in tests/integration/api/reveal.test.ts
 
 ### Implementation for User Story 1
 
-- [ ] T046 [P] [US1] Implement CreateSessionUseCase in src/server/application/use-cases/sessions/CreateSessionUseCase.ts
-- [ ] T047 [P] [US1] Implement JoinSessionUseCase in src/server/application/use-cases/sessions/JoinSessionUseCase.ts
-- [ ] T048 [P] [US1] Implement RegisterEpisodesUseCase in src/server/application/use-cases/episodes/RegisterEpisodesUseCase.ts
-- [ ] T049 [P] [US1] Implement UpdateEpisodesUseCase in src/server/application/use-cases/episodes/UpdateEpisodesUseCase.ts
-- [ ] T050 [P] [US1] Implement SubmitVoteUseCase in src/server/application/use-cases/voting/SubmitVoteUseCase.ts
-- [ ] T051 [P] [US1] Implement StartTurnUseCase in src/server/application/use-cases/turns/StartTurnUseCase.ts
-- [ ] T052 [P] [US1] Implement RevealAnswerUseCase in src/server/application/use-cases/turns/RevealAnswerUseCase.ts
-- [ ] T053 [US1] Implement POST /api/sessions route in src/app/api/sessions/route.ts
-- [ ] T054 [US1] Implement GET /api/sessions/[id] route in src/app/api/sessions/[id]/route.ts
-- [ ] T055 [US1] Implement POST /api/sessions/[id]/join route in src/app/api/sessions/[id]/join/route.ts
-- [ ] T056 [US1] Implement POST /api/episodes route in src/app/api/episodes/route.ts
-- [ ] T057 [US1] Implement PUT /api/episodes route in src/app/api/episodes/route.ts
-- [ ] T058 [US1] Implement POST /api/votes route in src/app/api/votes/route.ts
-- [ ] T059 [US1] Implement POST /api/turns/[id]/reveal route in src/app/api/turns/[id]/reveal/route.ts
-- [ ] T060 [P] [US1] Create EpisodeRegistrationForm component in src/components/domain/game/EpisodeRegistrationForm/index.tsx
-- [ ] T061 [US1] Create useEpisodeForm hook in src/components/domain/game/EpisodeRegistrationForm/hooks/useEpisodeForm.ts
-- [ ] T062 [US1] Create useEpisodeValidation hook in src/components/domain/game/EpisodeRegistrationForm/hooks/useEpisodeValidation.ts
-- [ ] T063 [P] [US1] Create VotingInterface component in src/components/domain/game/VotingInterface/index.tsx
-- [ ] T064 [US1] Create useVoting hook in src/components/domain/game/VotingInterface/hooks/useVoting.ts
-- [ ] T065 [P] [US1] Create ScoreBoard component in src/components/domain/game/ScoreBoard/index.tsx
-- [ ] T066 [US1] Create useScoreboard hook in src/components/domain/game/ScoreBoard/hooks/useScoreboard.ts
-- [ ] T067 [P] [US1] Create TurnDisplay component in src/components/domain/game/TurnDisplay/index.tsx
-- [ ] T068 [P] [US1] Create ResultReveal component in src/components/domain/game/ResultReveal/index.tsx
-- [ ] T069 [P] [US1] Create JoinPage component in src/components/pages/JoinPage/index.tsx
-- [ ] T070 [US1] Create useJoinPage hook in src/components/pages/JoinPage/hooks/useJoinPage.ts
-- [ ] T071 [P] [US1] Create GamePage component in src/components/pages/GamePage/index.tsx
-- [ ] T072 [US1] Create useGamePage hook in src/components/pages/GamePage/hooks/useGamePage.ts
-- [ ] T073 [US1] Implement join screen route in src/app/(game)/join/page.tsx
-- [ ] T074 [US1] Implement game screen route in src/app/(game)/game/[sessionId]/page.tsx
-- [ ] T075 [US1] Add episode validation error handling in src/lib/validators.ts
-- [ ] T076 [US1] Add vote validation and submission logic
-- [ ] T077 [US1] Integration test for complete player journey (join → register → vote → see results)
+- [X] T046 [P] [US1] Implement CreateSessionUseCase in src/server/application/use-cases/sessions/CreateSessionUseCase.ts
+- [X] T047 [P] [US1] Implement JoinSessionUseCase in src/server/application/use-cases/sessions/JoinSessionUseCase.ts
+- [X] T048 [P] [US1] Implement RegisterEpisodesUseCase in src/server/application/use-cases/episodes/RegisterEpisodesUseCase.ts
+- [X] T049 [P] [US1] Implement UpdateEpisodesUseCase in src/server/application/use-cases/episodes/UpdateEpisodesUseCase.ts
+- [X] T050 [P] [US1] Implement SubmitVoteUseCase in src/server/application/use-cases/voting/SubmitVoteUseCase.ts
+- [X] T051 [P] [US1] Implement StartTurnUseCase in src/server/application/use-cases/turns/StartTurnUseCase.ts
+- [X] T052 [P] [US1] Implement RevealAnswerUseCase in src/server/application/use-cases/turns/RevealAnswerUseCase.ts
+- [X] T053 [US1] Implement POST /api/sessions route in src/app/api/sessions/route.ts
+- [X] T054 [US1] Implement GET /api/sessions/[id] route in src/app/api/sessions/[id]/route.ts
+- [X] T055 [US1] Implement POST /api/sessions/[id]/join route in src/app/api/sessions/[id]/join/route.ts
+- [X] T056 [US1] Implement POST /api/episodes route in src/app/api/episodes/route.ts
+- [X] T057 [US1] Implement PUT /api/episodes route in src/app/api/episodes/route.ts
+- [X] T058 [US1] Implement POST /api/votes route in src/app/api/votes/route.ts
+- [X] T059 [US1] Implement POST /api/turns/[id]/reveal route in src/app/api/turns/[id]/reveal/route.ts
+- [X] T060 [P] [US1] Create EpisodeRegistrationForm component in src/components/domain/game/EpisodeRegistrationForm/index.tsx
+- [X] T061 [US1] Create useEpisodeForm hook in src/components/domain/game/EpisodeRegistrationForm/hooks/useEpisodeForm.ts
+- [X] T062 [US1] Create useEpisodeValidation hook in src/components/domain/game/EpisodeRegistrationForm/hooks/useEpisodeValidation.ts
+- [X] T063 [P] [US1] Create VotingInterface component in src/components/domain/game/VotingInterface/index.tsx
+- [X] T064 [US1] Create useVoting hook in src/components/domain/game/VotingInterface/hooks/useVoting.ts
+- [X] T065 [P] [US1] Create ScoreBoard component in src/components/domain/game/ScoreBoard/index.tsx
+- [X] T066 [US1] Create useScoreboard hook in src/components/domain/game/ScoreBoard/hooks/useScoreboard.ts
+- [X] T067 [P] [US1] Create TurnDisplay component in src/components/domain/game/TurnDisplay/index.tsx
+- [X] T068 [P] [US1] Create ResultReveal component in src/components/domain/game/ResultReveal/index.tsx
+- [X] T069 [P] [US1] Create JoinPage component in src/components/pages/JoinPage/index.tsx
+- [X] T070 [US1] Create useJoinPage hook in src/components/pages/JoinPage/hooks/useJoinPage.ts
+- [X] T071 [P] [US1] Create GamePage component in src/components/pages/GamePage/index.tsx
+- [X] T072 [US1] Create useGamePage hook in src/components/pages/GamePage/hooks/useGamePage.ts
+- [X] T073 [US1] Implement join screen route in src/app/(game)/join/page.tsx
+- [X] T074 [US1] Implement game screen route in src/app/(game)/game/[sessionId]/page.tsx
+- [X] T075 [US1] Add episode validation error handling in src/lib/validators.ts
+- [X] T076 [US1] Add vote validation and submission logic
+- [X] T077 [US1] Integration test for complete player journey (join → register → vote → see results)
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently - players can join, play, and see results
 
