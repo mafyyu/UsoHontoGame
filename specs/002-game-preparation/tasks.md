@@ -44,22 +44,22 @@ This document provides a complete, dependency-ordered task list for implementing
 
 ### Setup Tasks
 
-- [ ] T001 Install Prisma and Zod dependencies: `npm install prisma @prisma/client zod && npm install -D prisma`
-- [ ] T002 Initialize Prisma with SQLite: `npx prisma init --datasource-provider sqlite`
-- [ ] T003 Configure database URL in `.env`: `DATABASE_URL="file:./dev.db"`
-- [ ] T004 Create Prisma schema in `prisma/schema.prisma` with Game, Presenter, Episode models
-- [ ] T005 Run initial migration: `npx prisma migrate dev --name init`
-- [ ] T006 Generate Prisma Client: `npx prisma generate`
+- [X] T001 Install Prisma and Zod dependencies: `npm install prisma @prisma/client zod && npm install -D prisma`
+- [X] T002 Initialize Prisma with SQLite: `npx prisma init --datasource-provider sqlite`
+- [X] T003 Configure database URL in `.env`: `DATABASE_URL="file:./dev.db"`
+- [X] T004 Create Prisma schema in `prisma/schema.prisma` with Game, Presenter, Episode models
+- [X] T005 Run initial migration: `npx prisma migrate dev --name init`
+- [X] T006 Generate Prisma Client: `npx prisma generate`
 
 ### Zod Validation Schemas
 
-- [ ] T007 [P] Create directory structure: `mkdir -p src/server/domain/schemas`
-- [ ] T008 [P] Create GameId and GameStatus Zod schemas in `src/server/domain/schemas/gameSchemas.ts`
-- [ ] T009 [P] Create CreateGameSchema with playerLimit validation (1-100) in `src/server/domain/schemas/gameSchemas.ts`
-- [ ] T010 [P] Create AddPresenterSchema with nickname validation in `src/server/domain/schemas/gameSchemas.ts`
-- [ ] T011 [P] Create AddEpisodeSchema with text validation (1-1000 chars, CRITICAL requirement) and isLie boolean in `src/server/domain/schemas/gameSchemas.ts`
-- [ ] T012 [P] Create CompletePresenterSchema for "complete presenter" validation (exactly 3 episodes AND exactly 1 lie) in `src/server/domain/schemas/validators.ts`
-- [ ] T013 [P] Write unit tests for all Zod schemas (including edge cases: 0 chars, 1001 chars, multiple lies) in `tests/unit/schemas/gameSchemas.test.ts`
+- [X] T007 [P] Create directory structure: `mkdir -p src/server/domain/schemas`
+- [X] T008 [P] Create GameId and GameStatus Zod schemas in `src/server/domain/schemas/gameSchemas.ts`
+- [X] T009 [P] Create CreateGameSchema with playerLimit validation (1-100) in `src/server/domain/schemas/gameSchemas.ts`
+- [X] T010 [P] Create AddPresenterSchema with nickname validation in `src/server/domain/schemas/gameSchemas.ts`
+- [X] T011 [P] Create AddEpisodeSchema with text validation (1-1000 chars, CRITICAL requirement) and isLie boolean in `src/server/domain/schemas/gameSchemas.ts`
+- [X] T012 [P] Create CompletePresenterSchema for "complete presenter" validation (exactly 3 episodes AND exactly 1 lie) in `src/server/domain/schemas/validators.ts`
+- [X] T013 [P] Write unit tests for all Zod schemas (including edge cases: 0 chars, 1001 chars, multiple lies) in `tests/unit/schemas/gameSchemas.test.ts`
 
 ---
 
