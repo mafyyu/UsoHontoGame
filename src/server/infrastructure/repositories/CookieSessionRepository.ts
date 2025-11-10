@@ -23,14 +23,14 @@ export class CookieSessionRepository implements ISessionRepository {
     // Store session ID in HTTP-only cookie
     await setCookie(COOKIE_NAMES.SESSION_ID, session.sessionId.value, {
       httpOnly: true,
-      secure: true,
+      // secure flag automatically set based on NODE_ENV (setCookie default)
     });
 
     // Store nickname if exists (readable by client)
     if (session.nickname) {
       await setCookie(COOKIE_NAMES.NICKNAME, session.nickname.value, {
         httpOnly: false,
-        secure: true,
+        // secure flag automatically set based on NODE_ENV (setCookie default)
       });
     }
   }
@@ -68,14 +68,14 @@ export class CookieSessionRepository implements ISessionRepository {
     // Update session ID cookie (in case it changed, though unlikely)
     await setCookie(COOKIE_NAMES.SESSION_ID, session.sessionId.value, {
       httpOnly: true,
-      secure: true,
+      // secure flag automatically set based on NODE_ENV (setCookie default)
     });
 
     // Update nickname cookie
     if (session.nickname) {
       await setCookie(COOKIE_NAMES.NICKNAME, session.nickname.value, {
         httpOnly: false,
-        secure: true,
+        // secure flag automatically set based on NODE_ENV (setCookie default)
       });
     } else {
       await deleteCookie(COOKIE_NAMES.NICKNAME);
