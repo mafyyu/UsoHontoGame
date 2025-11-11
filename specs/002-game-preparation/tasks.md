@@ -184,18 +184,18 @@ This document provides a complete, dependency-ordered task list for implementing
 
 ### Application Layer
 
-- [ ] T058 [US3] Implement StartAcceptingResponses use case with validation in `src/server/application/use-cases/games/StartAcceptingResponses.ts`
-- [ ] T059 [US3] Implement CloseGame use case in `src/server/application/use-cases/games/CloseGame.ts`
-- [ ] T060 [P] [US3] Write unit tests for StartAcceptingResponses in `tests/unit/use-cases/StartAcceptingResponses.test.ts`
-- [ ] T061 [P] [US3] Write unit tests for CloseGame in `tests/unit/use-cases/CloseGame.test.ts`
+- [X] T058 [US3] Implement StartAcceptingResponses use case with validation in `src/server/application/use-cases/games/StartAcceptingResponses.ts`
+- [X] T059 [US3] Implement CloseGame use case in `src/server/application/use-cases/games/CloseGame.ts`
+- [X] T060 [P] [US3] Write unit tests for StartAcceptingResponses in `tests/unit/use-cases/StartAcceptingResponses.test.ts`
+- [X] T061 [P] [US3] Write unit tests for CloseGame in `tests/unit/use-cases/CloseGame.test.ts`
 
 ### Presentation Layer
 
-- [ ] T062 [US3] Create startAcceptingAction Server Action in `src/app/actions/game.ts`
-- [ ] T063 [US3] Create closeGameAction Server Action in `src/app/actions/game.ts`
-- [ ] T064 [US3] Add status transition buttons to GameCard component in `src/components/domain/game/GameCard.tsx`
-- [ ] T065 [US3] Create Badge component for status display in `src/components/ui/Badge.tsx`
-- [ ] T066 [US3] Write E2E test for status transitions in `tests/e2e/status-transitions.spec.ts`
+- [X] T062 [US3] Create startAcceptingAction Server Action in `src/app/actions/game.ts`
+- [X] T063 [US3] Create closeGameAction Server Action in `src/app/actions/game.ts`
+- [X] T064 [US3] Add status transition buttons to GameCard component in `src/components/domain/game/GameCard.tsx`
+- [X] T065 [US3] Create Badge component for status display in `src/components/ui/Badge.tsx`
+- [X] T066 [US3] Write E2E test for status transitions in `tests/e2e/status-transitions.spec.ts`
 
 **US3 Completion Criteria**:
 - ✅ Game transitions from 準備中 to 出題中 (with validation)

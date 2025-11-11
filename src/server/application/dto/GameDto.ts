@@ -44,3 +44,17 @@ export interface CreateGameOutput {
 	/** Creation timestamp */
 	createdAt: Date;
 }
+
+/**
+ * Game Management DTO
+ * Extended game information for management/moderator views
+ * Includes status for status transition operations
+ */
+export interface GameManagementDto extends GameDto {
+	/** Game status (準備中 | 出題中 | 締切) */
+	status: string;
+	/** Maximum players */
+	maxPlayers: number;
+	/** Current players */
+	currentPlayers: number;
+}
