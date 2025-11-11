@@ -2,7 +2,7 @@
 // Feature: 002-game-preparation
 // Implementation of IGameRepository using Prisma ORM for SQLite persistence
 
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "../../../generated/prisma/client";
 import type { IGameRepository } from "@/server/domain/repositories/IGameRepository";
 import { Game } from "@/server/domain/entities/Game";
 import { GameId } from "@/server/domain/value-objects/GameId";
@@ -104,6 +104,7 @@ export class PrismaGameRepository implements IGameRepository {
 			data: {
 				id: game.id.value,
 				name: game.name,
+				creatorId: game.creatorId,
 				status: game.status.toString(),
 				maxPlayers: game.maxPlayers,
 				currentPlayers: game.currentPlayers,

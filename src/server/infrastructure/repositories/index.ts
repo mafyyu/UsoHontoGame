@@ -5,7 +5,7 @@
 import type { IGameRepository } from "@/server/domain/repositories/IGameRepository";
 import { InMemoryGameRepository } from "./InMemoryGameRepository";
 import { PrismaGameRepository } from "./PrismaGameRepository";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "../../../generated/prisma/client";
 
 /**
  * Repository configuration
@@ -13,7 +13,7 @@ import { PrismaClient } from "@prisma/client";
 type RepositoryType = "memory" | "prisma";
 
 const REPOSITORY_TYPE: RepositoryType =
-	(process.env.REPOSITORY_TYPE as RepositoryType) || "memory";
+	(process.env.REPOSITORY_TYPE as RepositoryType) || "prisma";
 
 /**
  * Singleton Prisma client instance

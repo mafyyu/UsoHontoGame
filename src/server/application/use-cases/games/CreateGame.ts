@@ -50,6 +50,7 @@ export class CreateGame {
 			0, // New games start with 0 players
 			now,
 			now,
+			input.creatorId, // Session ID of the moderator who created the game
 		);
 
 		// Persist to repository
