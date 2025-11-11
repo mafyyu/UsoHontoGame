@@ -37,9 +37,11 @@ As a moderator, I want to create a new game so that players can participate in t
 
 **Acceptance Scenarios**:
 
-1. **Given** I'm logged in as a moderator, **When** I navigate to the game creation screen and submit a new game with a player limit of 10, **Then** a unique game is created and I'm redirected to the game list showing my newly created game
+1. **Given** I'm logged in as a moderator, **When** I navigate to the game creation screen and submit a new game with a game name and player limit of 10, **Then** a unique game is created with the specified name and I'm redirected to the game list showing my newly created game
 2. **Given** I'm creating a game, **When** I specify a player limit between 1 and 100, **Then** the game is created with that exact limit
 3. **Given** I'm creating a game, **When** I don't specify a player limit, **Then** I receive a validation error and the game is not created
+4. **Given** I'm creating a game, **When** I provide a game name, **Then** the game is created with that name instead of using the UUID as the default
+5. **Given** I'm creating a game, **When** I add presenters and their episodes during game creation, **Then** the game is created with the presenters and episodes already configured
 
 ---
 
@@ -141,8 +143,11 @@ As a moderator, I want to delete games I no longer need so that my game list sta
 ### Functional Requirements
 
 - **FR-001**: System MUST assign a unique UUID to each game upon creation
+- **FR-001a**: System MUST allow moderators to specify a custom game name when creating a game
+- **FR-001b**: System MUST use the game name as the display name if provided, otherwise fallback to UUID
 - **FR-002**: System MUST allow moderators to specify a player limit between 1 and 100 when creating a game
 - **FR-003**: System MUST allow moderators to add between 1 and 10 presenters to a game
+- **FR-003a**: System MUST allow moderators to add presenters and their episodes during game creation, not just after
 - **FR-004**: System MUST allow each presenter to register exactly 3 episodes
 - **FR-005**: System MUST allow each presenter to mark exactly one of their 3 episodes as a lie
 - **FR-006**: System MUST keep the lie marker confidential - visible only to the presenter who created it and the moderator
@@ -164,7 +169,7 @@ As a moderator, I want to delete games I no longer need so that my game list sta
 
 ### Key Entities
 
-- **Game**: Represents a truth-or-lie game session with unique identifier, player limit, presenters, status, and metadata (creation/update timestamps)
+- **Game**: Represents a truth-or-lie game session with unique identifier, optional custom name, player limit, presenters, status, and metadata (creation/update timestamps)
 - **Presenter**: A participant who creates episodes for players to evaluate, associated with a specific game, can register 3 episodes
 - **Episode**: A story or statement created by a presenter, with text content and a hidden truth/lie marker
 - **Game Status**: An enumeration of three possible states (準備中, 出題中, 締切) that controls game visibility and edit permissions
@@ -173,7 +178,7 @@ As a moderator, I want to delete games I no longer need so that my game list sta
 
 ### Measurable Outcomes
 
-- **SC-001**: Moderators can create a new game with required information in under 1 minute
+- **SC-001**: Moderators can create a new game with game name, player limit, and optionally presenters/episodes in under 2 minutes
 - **SC-002**: Presenters can register all 3 episodes and mark the lie in under 3 minutes
 - **SC-003**: Game status transitions are reflected in the TOP page within 2 seconds
 - **SC-004**: The game list loads and displays all games in under 1 second for moderators with up to 50 games
@@ -208,10 +213,12 @@ This feature depends on:
 1. A moderator is a user with session/nickname established through the existing session management feature
 2. There is no distinction between "moderator" and regular users - anyone with a session/nickname can create and moderate games (no separate role or permission system required)
 3. Episode text has a maximum length of 1000 characters (reasonable for a story/statement)
-4. Games can be created without a name/title initially (UUID serves as identifier)
-5. There is no time limit between status transitions (moderator has full control)
-6. Presenters are identified by their session nickname from the existing system
-7. When a moderator "adds" a presenter, they input the presenter's nickname and the system looks them up
-8. Editing a game in 準備中 status includes adding/removing presenters and changing player limit
-9. Games deleted from the system are hard-deleted (no recovery mechanism in MVP)
-10. Only the game creator (moderator) can edit or delete their games (no shared ownership)
+4. Game name is optional during creation - if not provided, UUID serves as identifier/display name
+5. Game name has a maximum length of 100 characters when provided
+6. There is no time limit between status transitions (moderator has full control)
+7. Presenters are identified by their session nickname from the existing system
+8. When a moderator adds a presenter during game creation, they input the presenter's nickname and the system looks them up
+9. Editing a game in 準備中 status includes adding/removing presenters, changing player limit, and modifying game name
+10. Games deleted from the system are hard-deleted (no recovery mechanism in MVP)
+11. Only the game creator (moderator) can edit or delete their games (no shared ownership)
+12. When adding presenters during game creation, moderators can add multiple presenters and configure all their episodes before submitting the game
