@@ -1,8 +1,8 @@
-// Game Creation Page
+// App Router Page: Game Creation
 // Feature: 002-game-preparation
-// Page for creating new games at /games/create
+// Server Component that delegates to GameCreatePage component
 
-import { GameForm } from "@/components/domain/game/GameForm";
+import { GameCreatePage } from "@/components/pages/GameCreatePage";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -11,13 +11,9 @@ export const metadata: Metadata = {
 };
 
 /**
- * Game Creation Page
- * Displays the GameForm component for creating new games
+ * Next.js App Router page for /games/create
+ * Thin wrapper that delegates to GameCreatePage component
  */
-export default function CreateGamePage() {
-	return (
-		<main className="min-h-screen bg-gray-50 py-8">
-			<GameForm />
-		</main>
-	);
+export default function Page() {
+	return <GameCreatePage />;
 }
