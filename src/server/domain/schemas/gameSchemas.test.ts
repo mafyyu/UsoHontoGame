@@ -17,19 +17,18 @@ import {
 } from '@/server/domain/schemas/gameSchemas';
 
 describe('GameIdSchema', () => {
-  it('should accept valid UUID v4', () => {
+  it('should accept valid game ID string', () => {
     const validUuid = '550e8400-e29b-41d4-a716-446655440000';
     expect(GameIdSchema.parse(validUuid)).toBe(validUuid);
   });
 
-  it('should reject invalid UUID format', () => {
-    expect(() => GameIdSchema.parse('not-a-uuid')).toThrow(
-      'ゲームIDは有効なUUIDでなければなりません'
-    );
+  it('should accept non-UUID game ID strings', () => {
+    expect(GameIdSchema.parse('game-123')).toBe('game-123');
+    expect(GameIdSchema.parse('not-a-uuid')).toBe('not-a-uuid');
   });
 
   it('should reject empty string', () => {
-    expect(() => GameIdSchema.parse('')).toThrow();
+    expect(() => GameIdSchema.parse('')).toThrow('ゲームIDは必須です');
   });
 });
 
@@ -261,8 +260,8 @@ describe('StartAcceptingSchema', () => {
     });
   });
 
-  it('should reject invalid game ID', () => {
-    expect(() => StartAcceptingSchema.parse({ gameId: 'invalid' })).toThrow();
+  it('should reject empty game ID', () => {
+    expect(() => StartAcceptingSchema.parse({ gameId: '' })).toThrow('ゲームIDは必須です');
   });
 });
 

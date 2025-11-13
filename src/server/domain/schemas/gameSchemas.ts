@@ -5,8 +5,8 @@
 import { z } from 'zod';
 
 // Value Object Schemas
-export const GameIdSchema = z.string().uuid({
-  message: 'ゲームIDは有効なUUIDでなければなりません',
+export const GameIdSchema = z.string().min(1, {
+  message: 'ゲームIDは必須です',
 });
 
 export const GameStatusSchema = z.enum(['準備中', '出題中', '締切'], {
