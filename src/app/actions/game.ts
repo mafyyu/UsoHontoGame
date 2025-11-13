@@ -18,6 +18,7 @@ import type { CreateGameOutput, GameManagementDto } from "@/server/application/d
 import type { GameDetailDto } from "@/server/application/dto/GameDetailDto";
 import {getCookie} from "@/lib/cookies";
 import {COOKIE_NAMES} from "@/lib/constants";
+import { GameId } from "@/server/domain/value-objects/GameId";
 
 /**
  * Server Action: Create new game
@@ -311,7 +312,7 @@ export async function getGameDetailAction(
 
 		// Get game from repository
 		const repository = createGameRepository();
-		const game = await repository.findById({ toString: () => gameId } as any);
+		const game = await repository.findById(new GameId(gameId));
 
 		if (!game) {
 			return {
