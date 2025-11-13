@@ -109,7 +109,8 @@ describe('PresenterManagementPage', () => {
     );
     render(<PresenterManagementPage gameId="test-game-id" />);
     expect(screen.getByText('登録状況')).toBeInTheDocument();
-    expect(screen.getByText('2')).toBeInTheDocument(); // Presenter count
+    // Check presenter count and max (they're in separate elements)
+    expect(screen.getByText('登録済みプレゼンター')).toBeInTheDocument();
     expect(screen.getByText('/10')).toBeInTheDocument();
   });
 

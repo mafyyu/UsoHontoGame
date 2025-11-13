@@ -98,6 +98,7 @@ describe('GameDetailPage', () => {
     });
     render(<GameDetailPage game={game} />);
     // Date formatting may vary by locale, so just check they're rendered
-    expect(screen.getByText(/2024/)).toBeInTheDocument();
+    const dateElements = screen.getAllByText(/2024/);
+    expect(dateElements.length).toBeGreaterThan(0);
   });
 });
