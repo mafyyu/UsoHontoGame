@@ -4,12 +4,16 @@
 // Feature: 002-game-preparation
 // Server Actions for managing presenters and episodes
 
+import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
+import { COOKIE_NAMES } from '@/lib/constants';
+import { getCookie } from '@/lib/cookies';
 import type { EpisodeWithLieDto } from '@/server/application/dto/EpisodeWithLieDto';
 import type { PresenterWithLieDto } from '@/server/application/dto/PresenterWithLieDto';
 import { AddEpisode } from '@/server/application/use-cases/games/AddEpisode';
 import { AddPresenter } from '@/server/application/use-cases/games/AddPresenter';
 import { GetPresenterEpisodes } from '@/server/application/use-cases/games/GetPresenterEpisodes';
+import { GetPresentersByGameId } from '@/server/application/use-cases/games/GetPresentersByGameId';
 import { RemovePresenter } from '@/server/application/use-cases/games/RemovePresenter';
 import {
   AddEpisodeSchema,
@@ -50,8 +54,7 @@ export async function addPresenterAction(
     }
 
     // Get session (for future authorization)
-    const cookieStore = await cookies();
-    const sessionId = cookieStore.get('session_id')?.value;
+    const sessionId = await getCookie(COOKIE_NAMES.SESSION_ID);
 
     if (!sessionId) {
       return {
@@ -70,6 +73,9 @@ export async function addPresenterAction(
       gameId: validationResult.data.gameId,
       nickname: validationResult.data.nickname,
     });
+
+    // Revalidate the presenter management page
+    revalidatePath(`/game/${validationResult.data.gameId}/presenters`);
 
     return {
       success: true,
@@ -110,8 +116,7 @@ export async function removePresenterAction(
     }
 
     // Get session (for future authorization)
-    const cookieStore = await cookies();
-    const sessionId = cookieStore.get('session_id')?.value;
+    const sessionId = await getCookie(COOKIE_NAMES.SESSION_ID);
 
     if (!sessionId) {
       return {
@@ -129,6 +134,9 @@ export async function removePresenterAction(
     await useCase.execute({
       presenterId: validationResult.data.presenterId,
     });
+
+    // Revalidate the presenter management page
+    revalidatePath(`/game/${validationResult.data.gameId}/presenters`);
 
     return {
       success: true,
@@ -172,8 +180,7 @@ export async function addEpisodeAction(
     }
 
     // Get session (for future authorization)
-    const cookieStore = await cookies();
-    const sessionId = cookieStore.get('session_id')?.value;
+    const sessionId = await getCookie(COOKIE_NAMES.SESSION_ID);
 
     if (!sessionId) {
       return {
@@ -186,6 +193,10 @@ export async function addEpisodeAction(
 
     // Execute use case
     const repository = createRepository();
+
+    // Get presenter to find gameId for revalidation
+    const presenter = await repository.findPresenterById(validationResult.data.presenterId);
+
     const useCase = new AddEpisode(repository);
 
     const result = await useCase.execute({
@@ -193,6 +204,11 @@ export async function addEpisodeAction(
       text: validationResult.data.text,
       isLie: validationResult.data.isLie,
     });
+
+    // Revalidate the presenter management page if we found the presenter
+    if (presenter) {
+      revalidatePath(`/game/${presenter.gameId}/presenters`);
+    }
 
     return {
       success: true,
@@ -218,8 +234,7 @@ export async function getPresenterEpisodesAction(
 ): Promise<{ success: true; presenter: PresenterWithLieDto } | { success: false; error: string }> {
   try {
     // Get session
-    const cookieStore = await cookies();
-    const sessionId = cookieStore.get('session_id')?.value;
+    const sessionId = await getCookie(COOKIE_NAMES.SESSION_ID);
 
     if (!sessionId) {
       return {
@@ -243,6 +258,48 @@ export async function getPresenterEpisodesAction(
     };
   } catch (error) {
     console.error('Failed to get presenter episodes:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'プレゼンターの取得に失敗しました',
+    };
+  }
+}
+
+/**
+ * Get Presenters by Game ID Server Action
+ * Retrieves all presenters for a game with their episodes
+ */
+export async function getPresentersAction(
+  gameId: string
+): Promise<
+  { success: true; presenters: PresenterWithLieDto[] } | { success: false; error: string }
+> {
+  try {
+    // Get session
+    const sessionId = await getCookie(COOKIE_NAMES.SESSION_ID);
+
+    if (!sessionId) {
+      return {
+        success: false,
+        error: 'セッションが見つかりません。ログインし直してください。',
+      };
+    }
+
+    // Execute use case
+    const repository = createRepository();
+    const useCase = new GetPresentersByGameId(repository);
+
+    const result = await useCase.execute({
+      gameId,
+      requesterId: sessionId,
+    });
+
+    return {
+      success: true,
+      presenters: result.presenters,
+    };
+  } catch (error) {
+    console.error('Failed to get presenters:', error);
     return {
       success: false,
       error: error instanceof Error ? error.message : 'プレゼンターの取得に失敗しました',

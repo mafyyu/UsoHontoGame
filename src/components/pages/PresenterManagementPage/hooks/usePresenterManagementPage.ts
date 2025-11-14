@@ -3,6 +3,7 @@
 // Manages state and business logic for presenter/episode management
 
 import { useEffect, useState } from 'react';
+import { getPresentersAction } from '@/app/actions/presenter';
 import type { PresenterWithLieDto } from '@/server/application/dto/PresenterWithLieDto';
 import type {
   PresenterManagementPageProps,
@@ -27,18 +28,21 @@ export function usePresenterManagementPage({
 
   /**
    * Load all presenters for the game
-   * Currently using mock data; will integrate with actual API endpoint
+   * Fetches presenters from the server using getPresentersAction
    */
   const loadPresenters = async () => {
     setIsLoading(true);
     setError(null);
 
     try {
-      // Load all presenters for this game
-      // Note: This is a simplified approach for MVP
-      // In production, we'd have a dedicated endpoint to fetch all game presenters
-      const mockPresenters: PresenterWithLieDto[] = [];
-      setPresenters(mockPresenters);
+      // Load all presenters for this game from the server
+      const result = await getPresentersAction(gameId);
+
+      if (result.success) {
+        setPresenters(result.presenters);
+      } else {
+        setError(result.error);
+      }
     } catch (err) {
       console.error('Failed to load presenters:', err);
       setError('プレゼンターの読み込みに失敗しました');
@@ -51,7 +55,7 @@ export function usePresenterManagementPage({
   useEffect(() => {
     loadPresenters();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadPresenters]);
+  }, [gameId]);
 
   /**
    * Handler for when a new presenter is added
