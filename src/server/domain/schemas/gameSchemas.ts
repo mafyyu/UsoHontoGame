@@ -112,3 +112,29 @@ export type AddEpisodeInput = z.infer<typeof AddEpisodeSchema>;
 export type UpdateEpisodeInput = z.infer<typeof UpdateEpisodeSchema>;
 export type RemoveEpisodeInput = z.infer<typeof RemoveEpisodeSchema>;
 export type AddPresenterWithEpisodesInput = z.infer<typeof AddPresenterWithEpisodesSchema>;
+
+// Status Transition Schemas (Feature: 004-status-transition)
+export const StartGameSchema = z.object({
+  gameId: GameIdSchema,
+  sessionId: z.string().min(1, { message: 'セッションIDが必要です' }),
+});
+
+export const CloseGameSchema = z.object({
+  gameId: GameIdSchema,
+  sessionId: z.string().min(1, { message: 'セッションIDが必要です' }),
+  confirmed: z.boolean().refine((val) => val === true, {
+    message: 'ゲームを締切するには確認が必要です',
+  }),
+});
+
+export const ValidateTransitionSchema = z.object({
+  gameId: GameIdSchema,
+  targetStatus: z.enum(['出題中', '締切'], {
+    message: '対象ステータスは「出題中」または「締切」でなければなりません',
+  }),
+});
+
+// Type Inference for Status Transitions
+export type StartGameInput = z.infer<typeof StartGameSchema>;
+export type CloseGameInput = z.infer<typeof CloseGameSchema>;
+export type ValidateTransitionInput = z.infer<typeof ValidateTransitionSchema>;
