@@ -2,14 +2,14 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { CreateGame } from '@/server/application/use-cases/games/CreateGame';
 import { ValidationError } from '@/server/domain/errors/ValidationError';
 import type { IGameRepository } from '@/server/domain/repositories/IGameRepository';
-import { InMemoryGameRepository } from '@/server/infrastructure/repositories/InMemoryGameRepository';
+import { createMockGameRepository } from '../../../../../tests/utils/mockRepositories';
 
 describe('CreateGame', () => {
   let repository: IGameRepository;
   let useCase: CreateGame;
 
   beforeEach(() => {
-    repository = InMemoryGameRepository.getInstance();
+    repository = createMockGameRepository();
     useCase = new CreateGame(repository);
   });
 

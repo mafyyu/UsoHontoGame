@@ -1,18 +1,10 @@
 // Repository Factory with Dependency Injection
 // Feature: 002-game-preparation
-// Provides game repository instances based on environment
+// Provides game repository instances using Prisma
 
 import type { IGameRepository } from '@/server/domain/repositories/IGameRepository';
 import { PrismaClient } from '../../../generated/prisma/client';
-import { InMemoryGameRepository } from './InMemoryGameRepository';
 import { PrismaGameRepository } from './PrismaGameRepository';
-
-/**
- * Repository configuration
- */
-type RepositoryType = 'memory' | 'prisma';
-
-const REPOSITORY_TYPE: RepositoryType = (process.env.REPOSITORY_TYPE as RepositoryType) || 'prisma';
 
 /**
  * Singleton Prisma client instance
@@ -30,16 +22,11 @@ function getPrismaClient(): PrismaClient {
 }
 
 /**
- * Creates game repository instance based on configuration
- * @returns IGameRepository implementation
+ * Creates game repository instance
+ * @returns IGameRepository implementation using Prisma
  */
 export function createGameRepository(): IGameRepository {
-  switch (REPOSITORY_TYPE) {
-    case 'prisma':
-      return new PrismaGameRepository(getPrismaClient());
-    default:
-      return InMemoryGameRepository.getInstance();
-  }
+  return new PrismaGameRepository(getPrismaClient());
 }
 
 /**
@@ -52,6 +39,5 @@ export async function closeRepositoryConnections(): Promise<void> {
   }
 }
 
-// Export repository implementations for testing
-export { InMemoryGameRepository } from './InMemoryGameRepository';
+// Export repository implementation
 export { PrismaGameRepository } from './PrismaGameRepository';

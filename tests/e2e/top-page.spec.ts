@@ -134,7 +134,7 @@ test.describe('TOP Page - Game Browsing', () => {
 
   test('FR-007: Only games with 出題中 status are displayed', async ({ page }) => {
     // Given: Multiple games exist with different statuses (seeded in repository)
-    // The InMemoryGameRepository should have test data
+    // The database should have test data
 
     // Then: Game list should only show games with 出題中 status
     // Note: This test depends on test data being available

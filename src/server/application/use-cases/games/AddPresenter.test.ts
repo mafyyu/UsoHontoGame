@@ -5,15 +5,15 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { AddPresenter } from '@/server/application/use-cases/games/AddPresenter';
 import { ValidationError } from '@/server/domain/errors/ValidationError';
-import { InMemoryGameRepository } from '@/server/infrastructure/repositories/InMemoryGameRepository';
+import type { IGameRepository } from '@/server/domain/repositories/IGameRepository';
+import { createMockGameRepository } from '../../../../../tests/utils/mockRepositories';
 
 describe('AddPresenter Use Case', () => {
-  let repository: InMemoryGameRepository;
+  let repository: IGameRepository;
   let useCase: AddPresenter;
 
   beforeEach(() => {
-    repository = InMemoryGameRepository.getInstance();
-    repository.clear(); // Clear repository before each test
+    repository = createMockGameRepository();
     useCase = new AddPresenter(repository);
   });
 
