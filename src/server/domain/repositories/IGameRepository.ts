@@ -119,4 +119,20 @@ export interface IGameRepository {
    * @param episode Episode entity with updated data
    */
   updateEpisode(episode: Episode): Promise<void>;
+
+  /**
+   * Find active games with pagination and player count
+   * @param params Pagination parameters
+   * @returns Games with metadata
+   */
+  findActiveGamesWithPagination(params: { limit: number; skip: number }): Promise<{
+    games: Array<{
+      id: string;
+      title: string;
+      createdAt: Date;
+      playerCount: number;
+      playerLimit: number | null;
+    }>;
+    total: number;
+  }>;
 }

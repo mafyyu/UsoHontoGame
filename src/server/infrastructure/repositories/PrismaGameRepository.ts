@@ -351,6 +351,51 @@ export class PrismaGameRepository implements IGameRepository {
   }
 
   /**
+   * Find active games with pagination and player count
+   * Feature: 005-top-active-games
+   */
+  async findActiveGamesWithPagination(params: { limit: number; skip: number }): Promise<{
+    games: Array<{
+      id: string;
+      title: string;
+      createdAt: Date;
+      playerCount: number;
+      playerLimit: number | null;
+    }>;
+    total: number;
+  }> {
+    // Fetch games with player count
+    const games = await this.prisma.game.findMany({
+      where: { status: '出題中' },
+      orderBy: { createdAt: 'desc' },
+      take: params.limit,
+      skip: params.skip,
+      include: {
+        _count: {
+          select: { players: true },
+        },
+      },
+    });
+
+    // Get total count
+    const total = await this.prisma.game.count({
+      where: { status: '出題中' },
+    });
+
+    // Map to expected format
+    return {
+      games: games.map((game) => ({
+        id: game.id,
+        title: game.name || 'Untitled Game',
+        createdAt: game.createdAt,
+        playerCount: game._count.players,
+        playerLimit: game.maxPlayers,
+      })),
+      total,
+    };
+  }
+
+  /**
    * Maps Prisma game model to domain entity
    */
   private toDomain(prismaGame: {
