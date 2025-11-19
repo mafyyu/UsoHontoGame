@@ -91,10 +91,10 @@ This is a full-stack Next.js application with Clean Architecture:
 
 ### Use Cases (TDD)
 
-- [ ] T023 [P] [US1] Write failing tests for GetGameForAnswers use case in src/server/application/use-cases/answers/GetGameForAnswers.test.ts (fetch game, validate status, hide isLie)
-- [ ] T024 [P] [US1] Write failing tests for SubmitAnswer use case in src/server/application/use-cases/answers/SubmitAnswer.test.ts (validate, create participation, upsert answer, handle overwrites)
-- [ ] T025 [US1] Implement GetGameForAnswers use case in src/server/application/use-cases/answers/GetGameForAnswers.ts to pass T023 tests
-- [ ] T026 [US1] Implement SubmitAnswer use case in src/server/application/use-cases/answers/SubmitAnswer.ts to pass T024 tests
+- [x] T023 [P] [US1] Write failing tests for GetGameForAnswers use case in src/server/application/use-cases/answers/GetGameForAnswers.test.ts (fetch game, validate status, hide isLie)
+- [x] T024 [P] [US1] Write failing tests for SubmitAnswer use case in src/server/application/use-cases/answers/SubmitAnswer.test.ts (validate, create participation, upsert answer, handle overwrites)
+- [x] T025 [US1] Implement GetGameForAnswers use case in src/server/application/use-cases/answers/GetGameForAnswers.ts to pass T023 tests
+- [x] T026 [US1] Implement SubmitAnswer use case in src/server/application/use-cases/answers/SubmitAnswer.ts to pass T024 tests
 
 ### Server Actions (TDD)
 
