@@ -47,6 +47,14 @@ export function useResponseStatus({
 
   const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const isMountedRef = useRef(true);
+  const onUpdateRef = useRef(onUpdate);
+  const onErrorRef = useRef(onError);
+
+  // Keep callback refs up to date
+  useEffect(() => {
+    onUpdateRef.current = onUpdate;
+    onErrorRef.current = onError;
+  }, [onUpdate, onError]);
 
   // Fetch response status from API
   const fetchResponseStatus = useCallback(async () => {
@@ -73,13 +81,13 @@ export function useResponseStatus({
           statusCode: response.status,
         };
         setError(error);
-        onError?.(error);
+        onErrorRef.current?.(error);
         return;
       }
 
       const responseData: ResponseStatusDto = await response.json();
       setData(responseData);
-      onUpdate?.(responseData);
+      onUpdateRef.current?.(responseData);
     } catch (err) {
       if (!isMountedRef.current) return;
 
@@ -88,13 +96,13 @@ export function useResponseStatus({
         statusCode: 0,
       };
       setError(error);
-      onError?.(error);
+      onErrorRef.current?.(error);
     } finally {
       if (isMountedRef.current) {
         setIsLoading(false);
       }
     }
-  }, [gameId, onUpdate, onError]);
+  }, [gameId]);
 
   // Manual refetch function
   const refetch = useCallback(async () => {
@@ -118,7 +126,11 @@ export function useResponseStatus({
   // Set up polling effect
   useEffect(() => {
     if (!isPolling) {
-      stopPolling();
+      // Clear any existing interval when polling is disabled
+      if (pollingIntervalRef.current) {
+        clearInterval(pollingIntervalRef.current);
+        pollingIntervalRef.current = null;
+      }
       return;
     }
 
@@ -137,7 +149,7 @@ export function useResponseStatus({
         pollingIntervalRef.current = null;
       }
     };
-  }, [isPolling, pollingInterval, fetchResponseStatus, stopPolling]);
+  }, [isPolling, pollingInterval, fetchResponseStatus]);
 
   // Cleanup on unmount
   useEffect(() => {
