@@ -133,9 +133,9 @@ npx prisma generate        # Generate Prisma Client
 
 **Testing**:
 ```bash
-npm test                    # Run all tests (unit + integration) in parallel - 515 tests
-npm run test:unit           # Run unit/component tests only (486 tests)
-npm run test:integration    # Run database integration tests (29 tests)
+npm test                    # Run all tests (unit + integration) in parallel - 2079 tests
+npm run test:unit           # Run unit/component tests only (1995 tests)
+npm run test:integration    # Run database integration tests (84 tests)
 npm run test:ui             # Run tests with UI
 npm run test:coverage       # Run tests with coverage report
 npm run test:e2e            # Run E2E tests (Playwright)
@@ -144,22 +144,25 @@ npm run test:e2e:debug      # Debug E2E tests
 ```
 
 **Testing Strategy**:
-- **Unit/Component Tests (486 tests)**: Fast, reliable, using mocks and test utilities
-- **Integration Tests (29 tests)**: Database tests with isolated SQLite files per test file
+- **Unit/Component Tests (1995 tests)**: Fast, reliable, using mocks and test utilities
+- **Integration Tests (84 tests)**: Database tests with isolated SQLite files per test file
 - **Parallel Execution**: All tests now run safely in parallel with proper database isolation
 - **Database Isolation**: Each integration test file uses its own SQLite database file
 
 **Test Organization**:
-- **Unit/Component Tests (486)**: Co-located with their implementation files using `.test.ts` or `.test.tsx` extension
+- **Unit/Component Tests (1995 tests, 106 files)**: Co-located with their implementation files using `.test.ts` or `.test.tsx` extension
   - Component tests: `src/components/pages/MyPage/MyPage.test.tsx`
   - Domain entity tests: `src/server/domain/entities/Game.test.ts`
   - Value object tests: `src/server/domain/value-objects/GameId.test.ts`
   - Schema tests: `src/server/domain/schemas/gameSchemas.test.ts`
   - Use case tests: `src/server/application/use-cases/games/CreateGame.test.ts`
   - Server action tests: `src/app/actions/game.test.ts`
-- **Integration Tests (29)**: `tests/integration/` directory with database isolation
-  - Database repository tests: `tests/integration/repositories/PrismaGameRepository.test.ts` (20 tests)
+  - Utility tests: `src/lib/date-utils.test.ts`
+- **Integration Tests (84 tests, 4 files)**: `tests/integration/` directory with database isolation
+  - Database repository tests: `tests/integration/repositories/PrismaGameRepository.test.ts` (64 tests)
   - Status transition tests: `tests/integration/status-transition.test.ts` (9 tests)
+  - Answer submission tests: `tests/integration/answer-submission.test.ts` (6 tests)
+  - Response status tests: `tests/integration/results/response-status.test.ts` (5 tests)
   - Each test file uses isolated SQLite database for parallel execution
   - Automatic database cleanup after test completion
 - **E2E Tests**: `tests/e2e/` directory (Playwright)
