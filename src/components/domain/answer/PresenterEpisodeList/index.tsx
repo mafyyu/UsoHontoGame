@@ -40,7 +40,10 @@ export const PresenterEpisodeList: FC<PresenterEpisodeListProps> = ({
     <ul aria-label={t('presenter.presenterList')} className="space-y-6">
       {presenters.map((presenter) => (
         <li key={presenter.id}>
-          <section aria-label={t('presenter.presenterEpisodes').replace('{name}', presenter.name)} className="border rounded-lg p-4">
+          <section
+            aria-label={t('presenter.presenterEpisodes').replace('{name}', presenter.name)}
+            className="border rounded-lg p-4"
+          >
             <h3 className="text-lg font-semibold mb-4 text-gray-900">{presenter.name}</h3>
             <EpisodeSelector
               episodes={presenter.episodes}

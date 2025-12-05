@@ -75,9 +75,7 @@ export function EpisodeForm({
 
       {!canAddMore && (
         <div className="mb-4 rounded-md border border-yellow-200 bg-yellow-50 p-4" role="alert">
-          <p className="text-yellow-800">
-            {t('episode.alreadyComplete')}
-          </p>
+          <p className="text-yellow-800">{t('episode.alreadyComplete')}</p>
         </div>
       )}
 
@@ -141,9 +139,7 @@ export function EpisodeForm({
             </label>
           </div>
           <p id="isLie-help" className="mt-1 text-xs text-gray-500">
-            {hasLieEpisode
-              ? t('episode.alreadyHasLie')
-              : t('validation.episode.lieCount')}
+            {hasLieEpisode ? t('episode.alreadyHasLie') : t('validation.episode.lieCount')}
           </p>
           {errors.isLie && (
             <p className="mt-1 text-sm text-red-600" role="alert">

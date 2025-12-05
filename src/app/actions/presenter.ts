@@ -310,9 +310,7 @@ export async function addPresenterWithEpisodesAction(
     return {
       success: false,
       errors: {
-        _form: [
-          error instanceof Error ? error.message : await t('action.presenter.add.error'),
-        ],
+        _form: [error instanceof Error ? error.message : await t('action.presenter.add.error')],
       },
     };
   }

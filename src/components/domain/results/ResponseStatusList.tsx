@@ -90,7 +90,9 @@ export default function ResponseStatusList({
                 )}
 
                 {/* Pending Status */}
-                {!participant.hasSubmitted && <span className="text-sm text-gray-500">{t('results.pending')}</span>}
+                {!participant.hasSubmitted && (
+                  <span className="text-sm text-gray-500">{t('results.pending')}</span>
+                )}
               </li>
             ))
           )}

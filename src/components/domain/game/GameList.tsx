@@ -45,9 +45,7 @@ export function GameList({ games, managementView = false, onGameClick }: GameLis
         </svg>
         <h3 className="mt-2 text-sm font-medium text-gray-900">{t('emptyState.noGames')}</h3>
         <p className="mt-1 text-sm text-gray-500">
-          {managementView
-            ? t('emptyState.createFirstGame')
-            : t('emptyState.noAvailableGames')}
+          {managementView ? t('emptyState.createFirstGame') : t('emptyState.noAvailableGames')}
         </p>
         {managementView && (
           <div className="mt-6">

@@ -36,7 +36,7 @@ export default async function Page({ params }: PageProps) {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      'Cookie': cookieHeader,
+      Cookie: cookieHeader,
     },
     credentials: 'include',
     cache: 'no-store', // Ensure fresh data for SSR

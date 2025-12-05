@@ -58,7 +58,8 @@ export function GameForm({
         {/* Game Name Input (optional) */}
         <div>
           <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-            {t('form.game.name.label')} ({t('form.game.name.optional')}, {t('validation.game.name.tooLong')})
+            {t('form.game.name.label')} ({t('form.game.name.optional')},{' '}
+            {t('validation.game.name.tooLong')})
           </label>
           <input
             type="text"
@@ -71,9 +72,7 @@ export function GameForm({
             aria-describedby={errors.name ? 'name-error' : undefined}
             aria-invalid={errors.name ? 'true' : 'false'}
           />
-          <p className="mt-1 text-xs text-gray-500">
-            {t('form.game.name.description')}
-          </p>
+          <p className="mt-1 text-xs text-gray-500">{t('form.game.name.description')}</p>
           {errors.name && (
             <p id="name-error" className="mt-1 text-sm text-red-600" role="alert">
               {errors.name[0]}

@@ -158,9 +158,7 @@ export function GameManagementCard({ game, onStatusChange }: GameManagementCardP
         )}
 
         {game.status === t('game.status.closed') && (
-          <div className="flex-1 text-center text-sm text-gray-500">
-            {t('game.gameClosed')}
-          </div>
+          <div className="flex-1 text-center text-sm text-gray-500">{t('game.gameClosed')}</div>
         )}
       </div>
     </div>
