@@ -2,13 +2,21 @@
  * ActiveGameCard Component Tests
  * Feature: 005-top-active-games (User Story 2)
  * Feature: 007-game-closure (Status badge and closed game handling)
+ * Feature: 008-i18n-support (Language switching support)
  * Tests for displaying game information (title, player count, time, status)
  */
 
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
+import type { ReactElement } from 'react';
 import type { ActiveGameListItem } from '@/types/game';
+import { LanguageProvider } from '@/providers/LanguageProvider';
 import { ActiveGameCard } from './ActiveGameCard';
+
+// Wrapper component for tests that provides LanguageProvider
+function renderWithLanguageProvider(ui: ReactElement) {
+  return render(<LanguageProvider>{ui}</LanguageProvider>);
+}
 
 describe('ActiveGameCard', () => {
   // T018: Test for displaying title
@@ -25,7 +33,7 @@ describe('ActiveGameCard', () => {
         status: '出題中',
       };
 
-      render(<ActiveGameCard game={game} />);
+      renderWithLanguageProvider(<ActiveGameCard game={game} />);
 
       expect(screen.getByText('テストゲーム')).toBeInTheDocument();
     });
@@ -42,7 +50,7 @@ describe('ActiveGameCard', () => {
         status: '出題中',
       };
 
-      render(<ActiveGameCard game={game} />);
+      renderWithLanguageProvider(<ActiveGameCard game={game} />);
 
       expect(
         screen.getByText('とても長いタイトルのゲームでテキストの折り返しを確認する')
@@ -64,7 +72,7 @@ describe('ActiveGameCard', () => {
         status: '出題中',
       };
 
-      render(<ActiveGameCard game={game} />);
+      renderWithLanguageProvider(<ActiveGameCard game={game} />);
 
       expect(screen.getByText('5 / 10人')).toBeInTheDocument();
     });
@@ -81,7 +89,7 @@ describe('ActiveGameCard', () => {
         status: '出題中',
       };
 
-      render(<ActiveGameCard game={game} />);
+      renderWithLanguageProvider(<ActiveGameCard game={game} />);
 
       expect(screen.getByText('7人')).toBeInTheDocument();
     });
@@ -98,7 +106,7 @@ describe('ActiveGameCard', () => {
         status: '出題中',
       };
 
-      render(<ActiveGameCard game={game} />);
+      renderWithLanguageProvider(<ActiveGameCard game={game} />);
 
       expect(screen.getByText('0 / 5人')).toBeInTheDocument();
     });
@@ -118,7 +126,7 @@ describe('ActiveGameCard', () => {
         status: '出題中',
       };
 
-      render(<ActiveGameCard game={game} />);
+      renderWithLanguageProvider(<ActiveGameCard game={game} />);
 
       expect(screen.getByText('30分前')).toBeInTheDocument();
     });
@@ -143,7 +151,7 @@ describe('ActiveGameCard', () => {
           status: '出題中',
         };
 
-        const { unmount } = render(<ActiveGameCard game={game} />);
+        const { unmount } = renderWithLanguageProvider(<ActiveGameCard game={game} />);
         expect(screen.getByText(formatted)).toBeInTheDocument();
         unmount();
       }
@@ -164,7 +172,7 @@ describe('ActiveGameCard', () => {
         status: '出題中',
       };
 
-      render(<ActiveGameCard game={game} />);
+      renderWithLanguageProvider(<ActiveGameCard game={game} />);
 
       expect(screen.getByText('完全なゲーム情報')).toBeInTheDocument();
       expect(screen.getByText('8 / 12人')).toBeInTheDocument();
@@ -183,7 +191,7 @@ describe('ActiveGameCard', () => {
         status: '出題中',
       };
 
-      const { container } = render(<ActiveGameCard game={game} />);
+      const { container } = renderWithLanguageProvider(<ActiveGameCard game={game} />);
 
       // Should render as an article or section
       const article = container.querySelector('article') || container.querySelector('div');
@@ -206,9 +214,9 @@ describe('ActiveGameCard', () => {
         status: '出題中',
       };
 
-      render(<ActiveGameCard game={game} />);
+      renderWithLanguageProvider(<ActiveGameCard game={game} />);
 
-      const answerLink = screen.getByRole('link', { name: '回答する' });
+      const answerLink = screen.getByRole('link', { name: '回答を送信' });
       expect(answerLink).toBeInTheDocument();
       expect(answerLink).toHaveAttribute('href', '/games/game-nav-001/answer');
     });
@@ -231,8 +239,8 @@ describe('ActiveGameCard', () => {
           status: '出題中',
         };
 
-        const { unmount } = render(<ActiveGameCard game={game} />);
-        const answerLink = screen.getByRole('link', { name: '回答する' });
+        const { unmount } = renderWithLanguageProvider(<ActiveGameCard game={game} />);
+        const answerLink = screen.getByRole('link', { name: '回答を送信' });
         expect(answerLink).toHaveAttribute('href', expectedHref);
         unmount();
       }
@@ -253,7 +261,7 @@ describe('ActiveGameCard', () => {
         status: '出題中',
       };
 
-      render(<ActiveGameCard game={game} />);
+      renderWithLanguageProvider(<ActiveGameCard game={game} />);
 
       const dashboardLink = screen.getByRole('link', { name: 'ダッシュボード' });
       expect(dashboardLink).toBeInTheDocument();
@@ -272,7 +280,7 @@ describe('ActiveGameCard', () => {
         status: '締切',
       };
 
-      render(<ActiveGameCard game={game} />);
+      renderWithLanguageProvider(<ActiveGameCard game={game} />);
 
       const resultsLink = screen.getByRole('link', { name: '結果を見る' });
       expect(resultsLink).toBeInTheDocument();
@@ -291,7 +299,7 @@ describe('ActiveGameCard', () => {
         status: '出題中',
       };
 
-      const { unmount } = render(<ActiveGameCard game={activeGame} />);
+      const { unmount } = renderWithLanguageProvider(<ActiveGameCard game={activeGame} />);
       expect(screen.getByText('ダッシュボード')).toBeInTheDocument();
       unmount();
 
@@ -301,7 +309,7 @@ describe('ActiveGameCard', () => {
         status: '締切',
       };
 
-      render(<ActiveGameCard game={closedGame} />);
+      renderWithLanguageProvider(<ActiveGameCard game={closedGame} />);
       expect(screen.getByText('結果を見る')).toBeInTheDocument();
     });
 
@@ -333,7 +341,7 @@ describe('ActiveGameCard', () => {
           status,
         };
 
-        const { unmount } = render(<ActiveGameCard game={game} />);
+        const { unmount } = renderWithLanguageProvider(<ActiveGameCard game={game} />);
         const link = screen.getByRole('link', { name: expectedText });
         expect(link).toHaveAttribute('href', expectedHref);
         unmount();
@@ -355,9 +363,9 @@ describe('ActiveGameCard', () => {
         status: '出題中',
       };
 
-      render(<ActiveGameCard game={game} />);
+      renderWithLanguageProvider(<ActiveGameCard game={game} />);
 
-      const answerLink = screen.getByRole('link', { name: '回答する' });
+      const answerLink = screen.getByRole('link', { name: '回答を送信' });
       // Should have transition and hover classes
       expect(answerLink.className).toMatch(/transition/);
     });
@@ -374,9 +382,9 @@ describe('ActiveGameCard', () => {
         status: '出題中',
       };
 
-      render(<ActiveGameCard game={game} />);
+      renderWithLanguageProvider(<ActiveGameCard game={game} />);
 
-      const answerLink = screen.getByRole('link', { name: '回答する' });
+      const answerLink = screen.getByRole('link', { name: '回答を送信' });
       expect(answerLink).toBeInTheDocument();
 
       const dashboardLink = screen.getByRole('link', { name: 'ダッシュボード' });
@@ -395,10 +403,10 @@ describe('ActiveGameCard', () => {
         status: '締切',
       };
 
-      render(<ActiveGameCard game={game} />);
+      renderWithLanguageProvider(<ActiveGameCard game={game} />);
 
       const disabledAnswerButton = screen.getByRole('button', {
-        name: 'このゲームは締め切られました',
+        name: 'ゲーム締切',
       });
       expect(disabledAnswerButton).toBeInTheDocument();
       expect(disabledAnswerButton).toBeDisabled();
@@ -419,9 +427,9 @@ describe('ActiveGameCard', () => {
         status: '出題中',
       };
 
-      render(<ActiveGameCard game={game} />);
+      renderWithLanguageProvider(<ActiveGameCard game={game} />);
 
-      const answerLink = screen.getByRole('link', { name: '回答する' });
+      const answerLink = screen.getByRole('link', { name: '回答を送信' });
       // Should have focus-visible classes for keyboard navigation
       expect(answerLink.className).toMatch(/focus/);
     });

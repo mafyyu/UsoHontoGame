@@ -41,7 +41,8 @@ export function ActiveGameCard({ game, currentSessionId: _currentSessionId }: Ac
     ? `${game.playerCount} / ${game.playerLimit}人`
     : `${game.playerCount}人`;
 
-  const isClosed = game.status === t('game.status.closed');
+  // Check if game is closed by comparing with the actual status value, not translated text
+  const isClosed = game.status === '締切';
 
   return (
     <article className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-all duration-200 hover:shadow-md hover:border-gray-300">
@@ -53,7 +54,7 @@ export function ActiveGameCard({ game, currentSessionId: _currentSessionId }: Ac
             isClosed ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800'
           }`}
         >
-          {game.status}
+          {isClosed ? t('game.status.closed') : t('game.status.active')}
         </span>
       </div>
 
