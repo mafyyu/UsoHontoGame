@@ -14,6 +14,8 @@ Auto-generated from all feature plans. Last updated: 2025-11-11
 - TypeScript 5 (strict mode) + Next.js 16.0.1, React 19.2.0 + Next.js 16.0.1, React 19.2.0, Prisma 6.19.0, Zod 4.1.12, Tailwind CSS v4, nanoid 5.1.6 (006-results-dashboard)
 - TypeScript 5 (strict mode), Node.js 20 + Next.js 16.0.1 (App Router), React 19.2.0, Prisma 6.19.0, Zod 4.1.12, Tailwind CSS v4 (007-game-closure)
 - localStorage (client-side persistence for language preference) (008-i18n-support)
+- TypeScript 5 (strict mode) / Node.js 20 + Next.js 16.0.1 (App Router), React 19.2.0, Tailwind CSS v4, Biome 2.3.4 (009-apple-hig-ui-redesign)
+- N/A (UI redesign, existing database unchanged) (009-apple-hig-ui-redesign)
 
 **Language & Framework**:
 - TypeScript 5 with strict mode enabled
@@ -342,9 +344,9 @@ function MyComponent() {
    - React Query integration for state management
 
 ## Recent Changes
+- 009-apple-hig-ui-redesign: Added TypeScript 5 (strict mode) / Node.js 20 + Next.js 16.0.1 (App Router), React 19.2.0, Tailwind CSS v4, Biome 2.3.4
 - 008-i18n-support: Added TypeScript 5 (strict mode) + Next.js 16.0.1, React 19.2.0, Tailwind CSS v4
 - 007-game-closure: Added TypeScript 5 (strict mode), Node.js 20 + Next.js 16.0.1 (App Router), React 19.2.0, Prisma 6.19.0, Zod 4.1.12, Tailwind CSS v4
-- 006-results-dashboard: Added TypeScript 5 (strict mode) + Next.js 16.0.1, React 19.2.0 + Next.js 16.0.1, React 19.2.0, Prisma 6.19.0, Zod 4.1.12, Tailwind CSS v4, nanoid 5.1.6
   - Created ActiveGameCard, ActiveGamesList, EmptyState components
   - GetActiveGames use case with status filtering
   - formatRelativeTime utility for Japanese time display

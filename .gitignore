@@ -64,3 +64,4 @@ tests/coverage/
 node_modules/.prisma/
 
 /src/generated/prisma
+build/
