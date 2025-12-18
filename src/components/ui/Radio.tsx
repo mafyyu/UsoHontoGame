@@ -6,7 +6,7 @@
 
 'use client';
 
-import { forwardRef, useId, type InputHTMLAttributes, type ReactNode } from 'react';
+import { forwardRef, useEffect, useState, type InputHTMLAttributes, type ReactNode } from 'react';
 import { classNames } from '@/lib/design-system/classNames';
 
 export type RadioSize = 'sm' | 'md' | 'lg';
@@ -74,8 +74,16 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(
   },
   ref
 ) {
-  const generatedId = useId();
-  const radioId = id || `radio-${generatedId}`;
+  // Generate ID only on client side to avoid hydration mismatch
+  const [generatedId, setGeneratedId] = useState<string>('');
+
+  useEffect(() => {
+    if (!id && !generatedId) {
+      setGeneratedId(`radio-${Math.random().toString(36).substring(2, 11)}`);
+    }
+  }, [id, generatedId]);
+
+  const radioId = id || generatedId || 'radio';
   const descriptionId = description ? `${radioId}-description` : undefined;
   const describedBy = descriptionId || ariaDescribedBy;
 
@@ -180,8 +188,16 @@ export function RadioGroup({
   'aria-label': ariaLabel,
   className,
 }: RadioGroupProps) {
-  const generatedId = useId();
-  const groupId = id || `radiogroup-${generatedId}`;
+  // Generate ID only on client side to avoid hydration mismatch
+  const [generatedId, setGeneratedId] = useState<string>('');
+
+  useEffect(() => {
+    if (!id && !generatedId) {
+      setGeneratedId(`radiogroup-${Math.random().toString(36).substring(2, 11)}`);
+    }
+  }, [id, generatedId]);
+
+  const groupId = id || generatedId || 'radiogroup';
   const labelId = label ? `${groupId}-label` : undefined;
   const helperId = helperText ? `${groupId}-helper` : undefined;
   const errorId = error && errorMessage ? `${groupId}-error` : undefined;

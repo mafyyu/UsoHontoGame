@@ -6,7 +6,7 @@
 
 'use client';
 
-import { forwardRef, useId, useState, type TextareaHTMLAttributes } from 'react';
+import { forwardRef, useEffect, useState, type TextareaHTMLAttributes } from 'react';
 import { classNames } from '@/lib/design-system/classNames';
 
 export type TextareaSize = 'sm' | 'md' | 'lg';
@@ -80,8 +80,16 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
     value ? String(value).length : defaultValue ? String(defaultValue).length : 0
   );
 
-  const generatedId = useId();
-  const textareaId = id || `textarea-${generatedId}`;
+  // Generate ID only on client side to avoid hydration mismatch
+  const [generatedId, setGeneratedId] = useState<string>('');
+
+  useEffect(() => {
+    if (!id && !generatedId) {
+      setGeneratedId(`textarea-${Math.random().toString(36).substring(2, 11)}`);
+    }
+  }, [id, generatedId]);
+
+  const textareaId = id || generatedId || 'textarea';
   const helperId = helperText ? `${textareaId}-helper` : undefined;
   const errorId = error && errorMessage ? `${textareaId}-error` : undefined;
   const describedBy = errorId || helperId || ariaDescribedBy;

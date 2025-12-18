@@ -6,7 +6,7 @@
 
 'use client';
 
-import { forwardRef, useId, type InputHTMLAttributes, type ReactNode } from 'react';
+import { forwardRef, useEffect, useState, type InputHTMLAttributes, type ReactNode } from 'react';
 import { classNames } from '@/lib/design-system/classNames';
 
 export type InputSize = 'sm' | 'md' | 'lg';
@@ -48,8 +48,16 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   },
   ref
 ) {
-  const generatedId = useId();
-  const inputId = id || `input-${generatedId}`;
+  // Generate ID only on client side to avoid hydration mismatch
+  const [generatedId, setGeneratedId] = useState<string>('');
+
+  useEffect(() => {
+    if (!id && !generatedId) {
+      setGeneratedId(`input-${Math.random().toString(36).substring(2, 11)}`);
+    }
+  }, [id, generatedId]);
+
+  const inputId = id || generatedId || 'input';
   const helperId = helperText ? `${inputId}-helper` : undefined;
   const errorId = error && errorMessage ? `${inputId}-error` : undefined;
   const describedBy = errorId || helperId || ariaDescribedBy;
