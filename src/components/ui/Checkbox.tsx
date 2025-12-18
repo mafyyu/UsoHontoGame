@@ -6,7 +6,7 @@
 
 'use client';
 
-import { forwardRef, type InputHTMLAttributes } from 'react';
+import { forwardRef, useId, type InputHTMLAttributes } from 'react';
 import { classNames } from '@/lib/design-system/classNames';
 
 export type CheckboxSize = 'sm' | 'md' | 'lg';
@@ -62,8 +62,8 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
   },
   ref
 ) {
-  const randomId = Math.random().toString(36).substr(2, 9);
-  const checkboxId = id || `checkbox-${randomId}`;
+  const generatedId = useId();
+  const checkboxId = id || `checkbox-${generatedId}`;
   const descriptionId = description ? `${checkboxId}-description` : undefined;
   const errorId = error && errorMessage ? `${checkboxId}-error` : undefined;
   const describedBy = errorId || descriptionId || ariaDescribedBy;

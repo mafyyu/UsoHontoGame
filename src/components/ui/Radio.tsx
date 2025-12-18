@@ -6,7 +6,7 @@
 
 'use client';
 
-import { forwardRef, type InputHTMLAttributes, type ReactNode } from 'react';
+import { forwardRef, useId, type InputHTMLAttributes, type ReactNode } from 'react';
 import { classNames } from '@/lib/design-system/classNames';
 
 export type RadioSize = 'sm' | 'md' | 'lg';
@@ -74,8 +74,8 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(
   },
   ref
 ) {
-  const randomId = Math.random().toString(36).substr(2, 9);
-  const radioId = id || `radio-${randomId}`;
+  const generatedId = useId();
+  const radioId = id || `radio-${generatedId}`;
   const descriptionId = description ? `${radioId}-description` : undefined;
   const describedBy = descriptionId || ariaDescribedBy;
 
@@ -180,8 +180,8 @@ export function RadioGroup({
   'aria-label': ariaLabel,
   className,
 }: RadioGroupProps) {
-  const randomId = Math.random().toString(36).substr(2, 9);
-  const groupId = id || `radiogroup-${randomId}`;
+  const generatedId = useId();
+  const groupId = id || `radiogroup-${generatedId}`;
   const labelId = label ? `${groupId}-label` : undefined;
   const helperId = helperText ? `${groupId}-helper` : undefined;
   const errorId = error && errorMessage ? `${groupId}-error` : undefined;

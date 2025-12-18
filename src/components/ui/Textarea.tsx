@@ -6,7 +6,7 @@
 
 'use client';
 
-import { forwardRef, useState, type TextareaHTMLAttributes } from 'react';
+import { forwardRef, useId, useState, type TextareaHTMLAttributes } from 'react';
 import { classNames } from '@/lib/design-system/classNames';
 
 export type TextareaSize = 'sm' | 'md' | 'lg';
@@ -80,8 +80,8 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
     value ? String(value).length : defaultValue ? String(defaultValue).length : 0
   );
 
-  const randomId = Math.random().toString(36).substr(2, 9);
-  const textareaId = id || `textarea-${randomId}`;
+  const generatedId = useId();
+  const textareaId = id || `textarea-${generatedId}`;
   const helperId = helperText ? `${textareaId}-helper` : undefined;
   const errorId = error && errorMessage ? `${textareaId}-error` : undefined;
   const describedBy = errorId || helperId || ariaDescribedBy;

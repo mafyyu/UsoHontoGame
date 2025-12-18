@@ -6,7 +6,7 @@
 
 'use client';
 
-import { forwardRef, type InputHTMLAttributes, type ReactNode } from 'react';
+import { forwardRef, useId, type InputHTMLAttributes, type ReactNode } from 'react';
 import { classNames } from '@/lib/design-system/classNames';
 
 export type InputSize = 'sm' | 'md' | 'lg';
@@ -48,8 +48,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   },
   ref
 ) {
-  const randomId = Math.random().toString(36).substr(2, 9);
-  const inputId = id || `input-${randomId}`;
+  const generatedId = useId();
+  const inputId = id || `input-${generatedId}`;
   const helperId = helperText ? `${inputId}-helper` : undefined;
   const errorId = error && errorMessage ? `${inputId}-error` : undefined;
   const describedBy = errorId || helperId || ariaDescribedBy;
