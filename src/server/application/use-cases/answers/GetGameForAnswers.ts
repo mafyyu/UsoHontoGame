@@ -74,7 +74,7 @@ export class GetGameForAnswers {
         success: false,
         error: {
           code: 'GAME_CLOSED',
-          message: await t('status.labels.closed'),
+          message: await t('errors.gameClosed'),
         },
       };
     }

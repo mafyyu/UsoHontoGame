@@ -82,7 +82,7 @@ export async function setNicknameAction(nickname: string): Promise<SetNicknameRe
         success: false,
         error: {
           code: 'NICKNAME_UPDATE_FAILED',
-          message: await t('errors.unexpectedError'),
+          message: await t('errors.nicknameUpdateFailed'),
         },
       };
     }
@@ -116,7 +116,7 @@ export async function setNicknameAction(nickname: string): Promise<SetNicknameRe
       success: false,
       error: {
         code: 'NICKNAME_UPDATE_FAILED',
-        message: await t('errors.unexpectedError'),
+        message: await t('errors.nicknameUpdateFailed'),
       },
     };
   }
