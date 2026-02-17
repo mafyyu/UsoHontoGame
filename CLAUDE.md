@@ -1,5 +1,7 @@
 # UsoHontoGame Development Guidelines
 
+Please read @README.md at first.
+
 Auto-generated from all feature plans. Last updated: 2025-11-11
 
 ## Active Technologies
