@@ -8,6 +8,7 @@ import { Header } from '@/components/ui/Header';
 import { GameListClient } from '@/components/domain/game/GameListClient';
 import { useLanguage } from '@/hooks/useLanguage';
 import type { GameListPageErrorProps, GameListPageProps } from './GameListPage.types';
+import { Navigation } from '@/components/ui/Navigation';
 
 /**
  * GameListPage - Main component for displaying game management
@@ -29,6 +30,8 @@ export function GameListPage({ games }: GameListPageProps) {
             <h1 className="text-3xl font-bold text-gray-900">{t('game.gameManagement')}</h1>
             <p className="mt-2 text-sm text-gray-600">{t('game.gameManagementDescription')}</p>
           </div>
+            <Navigation path="/"/>
+
           <a
             href="/games/create"
             className="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"

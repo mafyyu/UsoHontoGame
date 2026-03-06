@@ -10,6 +10,7 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import { Header } from '@/components/ui/Header';
 import { useLanguage } from '@/hooks/useLanguage';
 import type { TopPageProps } from './TopPage.types';
+import { Navigation } from '@/components/ui/Navigation';
 
 /**
  * TopPageNicknameSetup - Component for nickname setup state
@@ -55,6 +56,7 @@ export function TopPage({ nickname, games, currentSessionId }: TopPageProps) {
               {t('session.welcome')}, {nickname}!
             </h1>
           </div>
+          <Navigation path="/games" />
 
           <div className="mb-6">
             <h2 className="text-2xl font-semibold text-gray-800">{t('game.activeGames')}</h2>

@@ -15,6 +15,7 @@ import { useToast } from '@/hooks/useToast';
 import type { GameStatusValue } from '@/server/domain/value-objects/GameStatus';
 import type { GameDetailPageErrorProps, GameDetailPageProps } from './GameDetailPage.types';
 import { useGameStatus } from './hooks/useGameStatus';
+import { Navigation } from '@/components/ui/Navigation';
 
 /**
  * GameDetailPage - Main component for displaying game details
